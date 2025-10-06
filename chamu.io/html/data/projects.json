@@ -1,0 +1,32 @@
+[
+    {
+      "id": "tumour-ecm",
+      "name": "Tumour–ECM Invasion",
+      "area": "Biology",
+      "keywords": ["Fisher–KPP", "nonlinear diffusion", "travelling waves"],
+      "location": "Oxford",
+      "status": "active",
+      "link": "/projects/tumour-ecm/",
+      "updated": "2025-10-06"
+    },
+    {
+      "id": "rpi-buggy-old",
+      "name": "Raspberry Pi Buggy (old)",
+      "area": "RPi",
+      "keywords": ["Raspberry Pi", "Robotics", "Computer Vision"],
+      "location": "Home",
+      "status": "archived",
+      "link": "/projects/rpi-buggy-old/",
+      "updated": "2020-10-06"
+    },
+    {
+      "id": "rpi-face-recognition",
+      "name": "Raspberry Pi Face Recognition",
+      "area": "RPi",
+      "keywords": ["Raspberry Pi", "AI", "Computer Vision"],
+      "location": "Home",
+      "status": "active",
+      "link": "/projects/rpi-face-recognition/",
+      "updated": "2025-10-06"
+    }
+  ]

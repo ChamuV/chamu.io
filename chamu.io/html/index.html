@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Chamu — Home</title>
+  <link rel="stylesheet" href="/assets/site.css"/>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="/">Chamu.io</a>
+      <div class="menu">
+        <a href="/about/">About</a>
+        <a href="/resume/">Resume</a>
+        <a href="/projects/">Projects</a>
+        <a href="/stats/">Stats</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Short intro -->
+  <main class="wrap">
+    <section class="intro" style="text-align:center;">
+      <h1>Hi, I’m Chamu.</h1>
+      <p style="color:var(--muted); max-width:650px; margin:0 auto;">
+        I work at the intersection of mathematics, computing, and biology — exploring models, algorithms, and creative computational ideas. 
+        Below are some of my recent projects.
+      </p>
+    </section>
+
+    <!-- Project List -->
+    <section class="projects" style="margin-top:3rem;">
+      <h2 style="text-align:center;">Projects</h2>
+      <ul id="project-list" style="list-style:none; padding:0;"></ul>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="icons">
+      <a class="icon" href="https://github.com/your-username" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.55.12-3.23 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.68.24 2.93.12 3.23.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.61-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
+      </a>
+      <a class="icon" href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1S4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.78-2.2 4.05 0 4.8 2.67 4.8 6.16V24h-4v-7.9c0-1.89-.03-4.32-2.63-4.32-2.63 0-3.03 2.05-3.03 4.18V24h-4V8z"/></svg>
+      </a>
+      <a class="icon" href="mailto:me@chamu.io" aria-label="Email">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5v11A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5v-11Zm2.2-.5 7.8 5.2L19.8 6H4.2Zm15.3 2.3-6.93 4.62a1.5 1.5 0 0 1-1.64 0L4 8.3V17.5c0 .55.45 1 1 1h14.5c.55 0 1-.45 1-1V8.3Z"/></svg>
+      </a>
+    </div>
+    <div>© <span id="year"></span> Chamu</div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const STATUS_STYLES = {
+      active: { bg: '#e8f7ef', text: '#147a3b', border: '#bfe8cf' },
+      paused: { bg: '#fff4e5', text: '#a15c00', border: '#ffd59e' },
+      archived: { bg: '#f2f4f7', text: '#384250', border: '#d1d6de' },
+      idea: { bg: '#e9f2ff', text: '#1e5bb8', border: '#bed8ff' }
+    };
+
+    fetch('/data/projects.json')
+      .then(r => r.json())
+      .then(projects => {
+        const list = document.getElementById('project-list');
+        projects.forEach(p => {
+          const st = (p.status || 'idea').toLowerCase();
+          const s = STATUS_STYLES[st] || STATUS_STYLES.idea;
+
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.className = 'card';
+          a.href = p.link || `/projects/${encodeURIComponent(p.id)}/`;
+          a.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-weight:700">${p.name}</div>
+              <span class="pill" style="background:${s.bg};color:${s.text};border-color:${s.border};">${st}</span>
+            </div>
+            <div style="color:var(--muted);margin-top:.35rem;"><em>${p.area}</em> • ${(p.keywords||[]).join(', ')}</div>
+          `;
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      })
+      .catch(err => console.error('projects.json error', err));
+  </script>
+</body>
+</html>
