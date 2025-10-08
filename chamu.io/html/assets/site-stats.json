@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ---- EDIT THESE ----
+SITE_CREATED_AT="2025-01-01"              # your real launch date (ISO)
+PROJECTS_TOTAL=12                         # set your total projects
+PROJECTS_DONE=7                           # set your completed projects
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+OUT_JSON="$REPO_ROOT/assets/site-stats.json"
+
+# ---- LOC (lines of code) ----
+LOC_TOTAL=0
+if command -v cloc >/dev/null 2>&1; then
+  # cloc ignores .git, node_modules, etc. by default
+  LOC_TOTAL=$(cloc --json --quiet "$REPO_ROOT" 2>/dev/null | \
+              awk -F'[,:}]' '/"code"[[:space:]]*:[[:space:]]*[0-9]+/ {sum+=$2} END{print sum+0}')
+else
+  # Fallback: count by file extensions (crude but works without cloc)
+  LOC_TOTAL=$(find "$REPO_ROOT" \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.py" -o -name "*.ts" -o -name "*.md" \) \
+                -not -path "*/node_modules/*" -not -path "*/dist/*" -not -path "*/build/*" \
+                -type f -print0 | xargs -0 wc -l | tail -n1 | awk '{print $1+0}')
+fi
+
+# ---- Commits by date (last 52 weeks) ----
+# Produces lines like: "2025-02-03" 2
+TMP_COMMITS=$(mktemp)
+git log --since="52 weeks ago" --date=short --pretty="%ad" 2>/dev/null \
+  | sort | uniq -c | awk '{print $2, $1}' > "$TMP_COMMITS" || true
+
+# Convert to JSON object { "YYYY-MM-DD": n, ... }
+COMMITS_JSON="{"
+if [[ -s "$TMP_COMMITS" ]]; then
+  COMMITS_JSON=$(awk '
+    BEGIN{printf("{")}
+    { if (nr++) printf(","); printf("\"%s\": %d", $1, $2) }
+    END{printf("}")}' "$TMP_COMMITS")
+else
+  COMMITS_JSON="{}"
+fi
+rm -f "$TMP_COMMITS"
+
+# ---- Write final JSON ----
+mkdir -p "$REPO_ROOT/assets"
+cat > "$OUT_JSON" <<JSON
+{
+  "site_created_at": "$SITE_CREATED_AT",
+  "projects_total": $PROJECTS_TOTAL,
+  "projects_done": $PROJECTS_DONE,
+  "loc_total": $LOC_TOTAL,
+  "commits_by_date": $COMMITS_JSON
+}
+JSON
+
+echo "Wrote $OUT_JSON"
