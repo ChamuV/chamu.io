@@ -1,145 +1,141 @@
-/* ========= Base Style ========= */
-:root {
-    --ink: #0c1116;
-    --muted: #5a6775;
-    --bg: #f5f7fb;
-    --card: #ffffff;
-    --brand: #003566;
-    --link: #1e5bb8;
-    --ring: rgba(47, 111, 235, 0.15);
-    --maxw: 980px;
-  }
-  
-  * { box-sizing: border-box; }
-  
-  html, body {
-    margin: 0;
-    height: 100%;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--ink);
-    background: var(--bg);
-  }
-  
-  a {
-    color: var(--link);
-    text-decoration: none;
-  }
-  a:hover { text-decoration: underline; }
-  
-  /* ========= Header ========= */
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  }
-  
-  .nav {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.8rem 1rem;
-  }
-  
-  .brand {
-    font-weight: 800;
-    letter-spacing: 0.2px;
-    color: var(--brand);
-    font-size: 1.25rem;
-  }
-  
-  .menu {
-    display: flex;
-    gap: 1rem;
-  }
-  .menu a {
-    padding: 0.35rem 0.6rem;
-    border-radius: 8px;
-  }
-  .menu a:hover {
-    background: var(--ring);
-  }
-  
-  /* ========= Layout ========= */
-  .wrap {
-    max-width: var(--maxw);
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-  
-  h1, h2, h3 {
-    color: var(--brand);
-    margin-top: 0;
-  }
-  
-  /* ========= Card Style ========= */
-  .card,
-  a.card {
-    display: block;
-    width: 100%;
-    background: var(--card);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-    transition: transform .12s ease, box-shadow .12s ease;
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  a.card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  }
-  
-  /* The UL that holds cards */
-  #project-list {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0 2rem;
-  }
-  #project-list > li {
-    margin: .75rem 0;
-  }
-  
-  .pill {
-    display: inline-block;
-    padding: 0.25rem 0.6rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 1px solid;
-  }
-  
-  /* ========= Footer ========= */
-  footer {
-    margin: 3rem 0 2rem;
-    text-align: center;
-    color: var(--muted);
-  }
-  
-  .icons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin: 0.8rem 0;
-  }
-  
-  .icon {
-    display: inline-flex;
-    width: 36px;
-    height: 36px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-  }
-  
-  .icon:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  }
+/* ===== Base palette & typography ===== */
+:root{
+  --ink:#1f1f1f;
+  --muted:#444a52;
+  --bg:#fdfaf3;
+  --card:#ffffff;
+  --brand:#1a1a1a;
+  --link:#3d4d6d;
+  --ring:rgba(47,111,235,.15);
+  --maxw:980px;
+}
+
+body[data-theme="cream-light"]{ --bg:#fdfaf3; }
+body[data-theme="cream-warm"] { --bg:#fcf7eb; }
+body[data-theme="cream-cool"] { --bg:#faf9f4; }
+
+*{ box-sizing:border-box; }
+
+html, body{
+  margin:0; height:100%;
+  font-family: Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  color:var(--ink);
+  background:var(--bg); /* default theme background */
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+
+/* ===== Boids background option ===== */
+body[data-bg="boids"]{
+  background: transparent;      /* let canvas show */
+}
+
+/* Canvas layer (merged from boids css) */
+#boids-bg{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: none;                /* off by default */
+  z-index: 0;                   /* base layer */
+}
+
+/* Show canvas only when boids mode is active */
+body[data-bg="boids"] #boids-bg{
+  display: block;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #boids-bg { display: none !important; }
+}
+
+/* Make page content appear above the canvas */
+.page{
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Typography ===== */
+h1,h2,h3{
+  font-style:normal; font-weight:700; color:var(--brand);
+  margin-top:0; letter-spacing:.02em;
+}
+p,li,span{
+  font-style:italic; font-weight:400; font-size:1.05rem; line-height:1.65;
+  color:var(--ink);
+}
+a{
+  font-style:normal;
+  color:var(--link);
+  text-decoration:none;
+  transition:color .2s ease;
+}
+a:hover{ text-decoration:underline; color:#1b2c50; }
+
+/* ===== Header & Navigation ===== */
+.site-header{
+  position:sticky; top:0; z-index:10; /* stays above content; canvas is z=0 */
+  background:rgba(255,255,255,.9);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.nav{
+  max-width:var(--maxw);
+  margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.8rem 0;
+}
+.brand{
+  font-weight:800; font-size:1.5rem; letter-spacing:.02em; color:var(--brand);
+  margin-left:1.5rem;
+}
+.menu{
+  display:flex; gap:1.75rem;
+  margin-left:auto; margin-right:1.5rem;
+}
+.menu a{
+  padding:.4rem .6rem;
+  border-radius:8px;
+  font-weight:700; letter-spacing:0.5px; font-size:1.1rem;
+}
+.menu a:hover{ background:var(--ring); }
+
+/* ===== Layout ===== */
+.wrap{ max-width:var(--maxw); margin:2rem auto; padding:0 1rem; }
+
+/* ===== Cards ===== */
+.card, a.card{
+  display:block; width:100%;
+  background:var(--card);
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:12px; padding:1rem 1.25rem;
+  box-shadow:0 2px 10px rgba(0,0,0,.04);
+  transition:transform .12s ease, box-shadow .12s ease;
+  color:inherit; text-decoration:none;
+}
+a.card:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+/* project titles non-italic & bold */
+a.card div:first-child div{
+  font-style:normal; font-weight:700; color:var(--brand);
+}
+
+/* project keywords italic and muted */
+a.card em{ font-style:italic; color:var(--muted); }
+
+/* ===== Footer ===== */
+footer{
+  margin:3rem 0 2rem; text-align:center; color:var(--muted); font-style:italic;
+}
+.icons{
+  display:flex; gap:1rem; justify-content:center; margin:.8rem 0;
+}
+.icon{
+  display:inline-flex; width:36px; height:36px; align-items:center; justify-content:center;
+  border-radius:10px; background:#fff; border:1px solid rgba(0,0,0,.06);
+}
+.icon:hover{ box-shadow:0 6px 16px rgba(0,0,0,.08); }

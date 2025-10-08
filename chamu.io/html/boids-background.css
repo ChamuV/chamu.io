@@ -1,0 +1,14 @@
+#boids-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;          /* behind everything */
+    pointer-events: none; /* let clicks pass through */
+    display: block;
+  }
+  
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #boids-bg { display: none; }
+  }
