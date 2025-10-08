@@ -1,5 +1,6 @@
-// ===== Boids Background (v3, anti-drift + variety + FOV tuned) =====
+// ===== Boids Background (v3 universal, anti-drift + variety + FOV tuned) =====
 (() => {
+  // Run after DOM is ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
   } else {
@@ -7,10 +8,16 @@
   }
 
   function start() {
-    if (document.body && document.body.getAttribute("data-bg") !== "boids") return;
+    // 🔹 Run everywhere unless explicitly disabled
+    if (document.body && document.body.getAttribute("data-bg") === "no-boids") return;
 
+    // Canvas setup
     let canvas = document.getElementById("boids-bg");
-    if (!canvas) { canvas = document.createElement("canvas"); canvas.id = "boids-bg"; document.body.prepend(canvas); }
+    if (!canvas) {
+      canvas = document.createElement("canvas");
+      canvas.id = "boids-bg";
+      document.body.prepend(canvas);
+    }
 
     const ctx = canvas.getContext("2d", { alpha: true });
     let W = 0, H = 0, dpr = 1;
@@ -24,44 +31,56 @@
 
     // radii (px)
     const R_SEP = 20;
-    const R_ALIGN = 38; // ↓ smaller than before (45)
+    const R_ALIGN = 38;
     const R_COH = 80;
 
     // weights
-    const W_SEP = 2.0;  // ↑ stronger push apart
-    const W_ALIGN = 0.7; // ↓ weaker alignment
+    const W_SEP = 2.0;
+    const W_ALIGN = 0.7;
     const W_COH = 0.45;
     const W_WAND = 0.02;
 
-    // NEW: limit neighbor influence to a forward cone
+    // FOV & anti-drift tuning
     const USE_FOV = true;
-    const FOV_DEG = 220; // narrower FOV than 260; try 200–240
+    const FOV_DEG = 220;
     const COS_FOV = Math.cos((FOV_DEG * Math.PI / 180) / 2);
 
-    // Anti-drift + variety (from previous version)
     const NEUTRALIZE_DRIFT = true;
     const DRIFT_DAMP = 0.05;
 
+    // Variety control
     const VARIETY_STEER = true;
-    const VARIETY_AMPL  = 0.02;
-    const VARIETY_FREQ  = 0.00008;
-    const GROUP_PHASE   = [0.0, 2.1, 4.0];
+    const VARIETY_AMPL = 0.02;
+    const VARIETY_FREQ = 0.00008;
+    const GROUP_PHASE = [0.0, 2.1, 4.0];
 
     // ------- Utils -------
     const mag = v => Math.hypot(v.x, v.y);
-    const heading = v => { const m = mag(v) || 1e-9; return { x: v.x / m, y: v.y / m }; };
-    const limit = (v, m) => { const n = mag(v); if (n > m) { v.x *= m / n; v.y *= m / n; } return v; };
-    const setMag = (v, m) => { const n = mag(v) || 1e-9; v.x *= m / n; v.y *= m / n; return v; };
+    const heading = v => {
+      const m = mag(v) || 1e-9;
+      return { x: v.x / m, y: v.y / m };
+    };
+    const limit = (v, m) => {
+      const n = mag(v);
+      if (n > m) { v.x *= m / n; v.y *= m / n; }
+      return v;
+    };
+    const setMag = (v, m) => {
+      const n = mag(v) || 1e-9;
+      v.x *= m / n; v.y *= m / n;
+      return v;
+    };
     const angDiff = (a, b) => ((b - a + Math.PI) % (2 * Math.PI)) - Math.PI;
     const rotateTowards = (v, des, maxA) => {
       const s = mag(v), a = Math.atan2(v.y, v.x), b = Math.atan2(des.y, des.x);
-      const d = angDiff(a, b); const na = Math.abs(d) < maxA ? b : a + (d > 0 ? maxA : -maxA);
+      const d = angDiff(a, b);
+      const na = Math.abs(d) < maxA ? b : a + (d > 0 ? maxA : -maxA);
       return { x: Math.cos(na) * s, y: Math.sin(na) * s };
     };
     const torusOffset = (ax, ay, bx, by) => {
       let dx = bx - ax, dy = by - ay;
-      if (dx >  W / 2) dx -= W; else if (dx < -W / 2) dx += W;
-      if (dy >  H / 2) dy -= H; else if (dy < -H / 2) dy += H;
+      if (dx > W / 2) dx -= W; else if (dx < -W / 2) dx += W;
+      if (dy > H / 2) dy -= H; else if (dy < -H / 2) dy += H;
       return { x: dx, y: dy };
     };
 
@@ -89,7 +108,10 @@
       }
       wander() {
         this.tick--;
-        if (this.tick <= 0) { this.tick = 60 + (Math.random() * 120) | 0; this.wT += (Math.random() - 0.5) * 1.2; }
+        if (this.tick <= 0) {
+          this.tick = 60 + (Math.random() * 120) | 0;
+          this.wT += (Math.random() - 0.5) * 1.2;
+        }
         const d = heading({ x: this.vx, y: this.vy });
         const p = { x: -d.y, y: d.x };
         const t = { x: d.x + p.x * Math.sin(this.wT) * 0.6, y: d.y + p.y * Math.sin(this.wT) * 0.6 };
@@ -98,27 +120,21 @@
       }
       rule(boids) {
         const fwd = heading({ x: this.vx, y: this.vy });
-
         let sx = 0, sy = 0, ax = 0, ay = 0, cx = 0, cy = 0, cs = 0, ca = 0, cc = 0;
         for (const o of boids) {
           if (o === this) continue;
           const off = torusOffset(this.x, this.y, o.x, o.y);
           const d = Math.hypot(off.x, off.y);
           if (d <= 0) continue;
-
-          // Separation: always active (short-range emergency)
           if (d < R_SEP) { sx -= off.x / d; sy -= off.y / d; cs++; }
-
-          // Alignment & cohesion only with same-colour neighbors and (optionally) within FOV
           if (o.group === this.group) {
             const inFOV = !USE_FOV || ((off.x / d) * fwd.x + (off.y / d) * fwd.y) >= COS_FOV;
             if (inFOV) {
               if (d < R_ALIGN) { ax += o.vx; ay += o.vy; ca++; }
-              if (d < R_COH)   { cx += this.x + off.x; cy += this.y + off.y; cc++; }
+              if (d < R_COH) { cx += this.x + off.x; cy += this.y + off.y; cc++; }
             }
           }
         }
-
         const F = { x: 0, y: 0 };
         if (cs) { sx /= cs; const des = setMag({ x: sx, y: sy }, MAX_SPEED);
           F.x += (des.x - this.vx) * W_SEP; F.y += (des.y - this.vy) * W_SEP; }
@@ -127,7 +143,6 @@
         if (cc) { cx /= cc; const dx = cx - this.x, dy = cy - this.y;
           const des = setMag({ x: dx, y: dy }, MAX_SPEED);
           F.x += (des.x - this.vx) * W_COH; F.y += (des.y - this.vy) * W_COH; }
-
         const w = this.wander(); F.x += w.x * W_WAND; F.y += w.y * W_WAND;
         return limit(F, MAX_FORCE);
       }
@@ -135,12 +150,10 @@
         const s = this.rule(boids);
         const sTotal = { x: s.x + antiDrift.x + variety.x, y: s.y + antiDrift.y + variety.y };
         limit(sTotal, MAX_FORCE);
-
         let dv = { x: this.vx + sTotal.x, y: this.vy + sTotal.y };
         dv = setMag(dv, Math.min(mag(dv), MAX_SPEED));
         const nv = rotateTowards({ x: this.vx, y: this.vy }, dv, MAX_TURN);
         this.vx = nv.x; this.vy = nv.y;
-
         this.x += this.vx; this.y += this.vy;
         if (this.x < 0) this.x += W; else if (this.x >= W) this.x -= W;
         if (this.y < 0) this.y += H; else if (this.y >= H) this.y -= H;
@@ -148,15 +161,19 @@
       draw(ctx) {
         const d = heading({ x: this.vx, y: this.vy });
         const l = { x: -d.y, y: d.x };
-        const tip  = { x: this.x + d.x * 14, y: this.y + d.y * 14 };
-        const base = { x: this.x - d.x * 9,  y: this.y - d.y * 9  };
-        const left = { x: base.x + l.x * 4,  y: base.y + l.y * 4  };
-        const right= { x: base.x - l.x * 4,  y: base.y - l.y * 4  };
+        const tip = { x: this.x + d.x * 14, y: this.y + d.y * 14 };
+        const base = { x: this.x - d.x * 9, y: this.y - d.y * 9 };
+        const left = { x: base.x + l.x * 4, y: base.y + l.y * 4 };
+        const right = { x: base.x - l.x * 4, y: base.y - l.y * 4 };
         ctx.beginPath();
-        ctx.moveTo(tip.x, tip.y); ctx.lineTo(left.x, left.y); ctx.lineTo(right.x, right.y);
+        ctx.moveTo(tip.x, tip.y);
+        ctx.lineTo(left.x, left.y);
+        ctx.lineTo(right.x, right.y);
         ctx.closePath();
-        ctx.fillStyle = COLORS[this.group]; ctx.fill();
-        ctx.strokeStyle = "#282828"; ctx.stroke();
+        ctx.fillStyle = COLORS[this.group];
+        ctx.fill();
+        ctx.strokeStyle = "#282828";
+        ctx.stroke();
       }
     }
 
@@ -173,15 +190,15 @@
     function frame(t) {
       if (running) {
         ctx.clearRect(0, 0, W, H);
-
-        // anti-drift: subtract mean velocity
+        // anti-drift
         let mvx = 0, mvy = 0;
-        if (NEUTRALIZE_DRIFT) { for (const b of boids) { mvx += b.vx; mvy += b.vy; } mvx /= boids.length||1; mvy /= boids.length||1; }
+        if (NEUTRALIZE_DRIFT) {
+          for (const b of boids) { mvx += b.vx; mvy += b.vy; }
+          mvx /= boids.length || 1; mvy /= boids.length || 1;
+        }
         const anti = NEUTRALIZE_DRIFT
           ? limit({ x: -mvx * DRIFT_DAMP, y: -mvy * DRIFT_DAMP }, MAX_FORCE * 0.6)
           : { x: 0, y: 0 };
-
-        // per-group variety: tiny rotating bias
         const groupVar = [];
         if (VARIETY_STEER) {
           for (let g = 0; g < NUM_GROUPS; g++) {
@@ -189,9 +206,8 @@
             groupVar[g] = { x: Math.cos(ang) * VARIETY_AMPL, y: Math.sin(ang) * VARIETY_AMPL };
           }
         }
-
         for (const b of boids) {
-          const v = VARIETY_STEER ? groupVar[b.group] : { x:0, y:0 };
+          const v = VARIETY_STEER ? groupVar[b.group] : { x: 0, y: 0 };
           b.update(boids, anti, v);
         }
         for (const b of boids) b.draw(ctx);

@@ -1,27 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Resume • Chamu</title>
   <link rel="stylesheet" href="/assets/site.css"/>
+
+  <!-- Tiny helpers; everything else uses your built-in .wrap and .card -->
+  <style>
+    .cols { display:grid; gap:1rem; }
+    .stack { display:flex; flex-direction:column; gap:1rem; }
+    /* Education item styling: title regular+smaller; details italic */
+    .ed-item .ed-title { font-weight:600; font-style:normal; font-size:1rem; margin:0 0 .15rem 0; }
+    .ed-item .ed-meta  { font-style:italic; margin:.1rem 0 .35rem 0; }
+    @media (min-width: 900px) {
+      .cols { grid-template-columns: 1fr 2fr; align-items:start; }
+    }
+  </style>
 </head>
 <body>
 <header class="site-header">
   <nav class="nav">
     <a class="brand" href="/">Chamu</a>
-    <div class="menu"><a href="/about/">About</a><a href="/resume/">Resume</a><a href="/projects/">Projects</a><a href="/stats/">Stats</a><a href="/contact/">Contact</a></div>
+    <div class="menu">
+      <a href="/about/">About</a>
+      <a href="/resume/">Resume</a>
+      <a href="/projects/">Projects</a>
+      <a href="/stats/">Stats</a>
+      <a href="/contact/">Contact</a>
+    </div>
   </nav>
 </header>
+
 <main class="wrap">
   <h1>Resume</h1>
-  <div class="card">
-    <p>Link to a PDF or keep a structured resume here. (e.g., <a href="/assets/Chamu-Resume.pdf">Download PDF</a>)</p>
+
+  <div class="cols">
+    <!-- LEFT COLUMN: split boxes -->
+    <div class="stack">
+      <div class="card">
+        <h2>Technical Skills</h2>
+        <p><b>Programming:</b> Python (Advanced), Matlab (Advanced), R (Intermediate), MySQL (Intermediate)</p>
+        <p><b>Modelling:</b> Finite Differences, Finite Elements, PDE Modelling</p>
+        <p><b>Tools:</b> GitHub, Raspberry Pi, LaTeX</p>
+      </div>
+
+      <div class="card">
+        <h2>Interests</h2>
+        <p>Numerical Modelling, Biomathematics, Scientific Computing</p>
+      </div>
+
+      <div class="card">
+        <h2>Languages</h2>
+        <p>English (Proficient), Tamil (Native), Hindi (Fluent)</p>
+      </div>
+
+      <div class="card">
+        <h2>Resume PDF</h2>
+        <p><a href="/assets/Chamu-Resume.pdf">Download PDF</a></p>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="stack">
+      <div class="card">
+        <h2>Education</h2>
+
+        <div class="ed-item">
+          <p class="ed-title">MSc Mathematical Modelling and Scientific Computing — University of Oxford (2024–2025)</p>
+          <p class="ed-meta">Modules: Numerical Linear Algebra, Scientific Computing, PDE Modelling, Optimisation.</p>
+          <p class="ed-meta">Dissertation: PDE-based tumour–ECM interaction model with nonlinear diffusion; finite difference and finite element simulations.</p>
+        </div>
+
+        <div class="ed-item">
+          <p class="ed-title">BSc Mathematics — University College London (2021–2024)</p>
+          <p class="ed-meta">First Class Honours; specialised in Biomathematics and Computational Methods.</p>
+          <p class="ed-meta">Key modules: Applied Differential Equations, Numerical Methods, Mathematical Biology.</p>
+        </div>
+
+        <div class="ed-item">
+          <p class="ed-title">High School — Lawrence School, Lovedale (2011–2020)</p>
+          <p class="ed-meta">Graduated with 97%.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Research Experience</h2>
+        <p><b>Dissertation – Tumour Growth with ECM</b>, University of Oxford <i>(Apr 2025–Present)</i><br/>
+          Developed PDE model of ECM–tumour dynamics; implemented FD/FE solvers; analysed invasion speeds under parameter sweeps.</p>
+        <p><b>FISTA–PALM for Sparse Optimisation</b>, University of Oxford <i>(Jan 2025–Apr 2025)</i><br/>
+          Enhanced PALM for nonconvex matrix factorisation with Nesterov acceleration; observed faster convergence in benchmarks.</p>
+        <p><b>Cycling Breakaway Strategy Modelling</b>, University of Oxford <i>(Jan 2025–Apr 2025)</i><br/>
+          Built optimisation framework with rider-specific power–duration constraints; validated on race data, outperforming generic strategies.</p>
+        <p><b>Mary Lister McCammon Fellowship</b>, Imperial College London <i>(Jul 2024–Sep 2024)</i><br/>
+          Worked in Prof. Timo Betcke’s group on Krylov subspace methods for low-rank approximations; improved efficiency for large problems.</p>
+      </div>
+
+      <div class="card">
+        <h2>Internships</h2>
+        <p><b>Finance Analyst Intern</b>, MCD Capital (Remote) <i>(Summer 2024)</i><br/>
+          Developed commodity clustering model; refined grouping accuracy over standard methods.</p>
+        <p><b>ML Intern</b>, WhatsInIt.Tech (Remote) <i>(Summer 2023)</i><br/>
+          Implemented SVM and logistic regression for predictive maintenance; built data preprocessing pipeline.</p>
+        <p><b>Operations Intern</b>, Valory AG (Remote) <i>(Jul–Sep 2022)</i><br/>
+          Coordinated logistics and supported AI/blockchain research projects.</p>
+      </div>
+
+      <div class="card">
+        <h2>Projects</h2>
+        <p><b>Face Recognition on Raspberry Pi</b> <i>(2025–Present)</i><br/>
+          OpenCV-based facial recognition; integrating FISTA–PALM and CNNs for improved classification.</p>
+        <p><b>Robot Buggy Project</b> <i>(2021)</i><br/>
+          Line-following robot (Raspberry Pi, ultrasonic sensors); extended to follow mobile device signal.</p>
+        <p><b>Bike Share Data Analysis</b> <i>(2018)</i><br/>
+          Python CLI to analyse bikeshare usage patterns.</p>
+      </div>
+    </div>
   </div>
 </main>
+
 <footer>
-  <div class="icons"><a class="icon" href="https://github.com/your-username" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.55.12-3.23 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.68.24 2.93.12 3.23.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.61-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg></a><a class="icon" href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1S4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.78-2.2 4.05 0 4.8 2.67 4.8 6.16V24h-4v-7.9c0-1.89-.03-4.32-2.63-4.32-2.63 0-3.03 2.05-3.03 4.18V24h-4V8z"/></svg></a><a class="icon" href="mailto:me@chamu.io" aria-label="Email"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5v11A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5v-11Z"/></svg></a></div>
+  <div class="icons">
+    <a class="icon" href="https://github.com/your-username" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.55.12-3.23 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.68.24 2.93.12 3.23.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.61-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
+    </a>
+    <a class="icon" href="https://www.linkedin.com/in/chamurv" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1S4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.78-2.2 4.05 0 4.8 2.67 4.8 6.16V24h-4v-7.9c0-1.89-.03-4.32-2.63-4.32-2.63 0-3.03 2.05-3.03 4.18V24h-4V8z"/></svg>
+    </a>
+    <a class="icon" href="mailto:me@chamu.io" aria-label="Email">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5v11A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5v-11Z"/></svg>
+    </a>
+  </div>
   <div>© <span id="year"></span> Chamu</div>
 </footer>
+
 <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
 </body>
 </html>
