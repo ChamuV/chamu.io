@@ -1,0 +1,11 @@
+# System
+.DS_Store
+Thumbs.db
+
+# Python
+venv/
+__pycache__/
+
+# Notebooks / scratch
+*.ipynb
+Other/
