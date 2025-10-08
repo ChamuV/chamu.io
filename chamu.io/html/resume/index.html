@@ -13,6 +13,8 @@
     /* Education item styling: title regular+smaller; details italic */
     .ed-item .ed-title { font-weight:600; font-style:normal; font-size:1rem; margin:0 0 .15rem 0; }
     .ed-item .ed-meta  { font-style:italic; margin:.1rem 0 .35rem 0; }
+    /* Center the main page title */
+    main.wrap > h1 { text-align:center; margin-bottom:1.5rem; }
     @media (min-width: 900px) {
       .cols { grid-template-columns: 1fr 2fr; align-items:start; }
     }
@@ -36,7 +38,7 @@
   <h1>Resume</h1>
 
   <div class="cols">
-    <!-- LEFT COLUMN: split boxes -->
+    <!-- LEFT COLUMN -->
     <div class="stack">
       <div class="card">
         <h2>Technical Skills</h2>
@@ -127,8 +129,12 @@
     <a class="icon" href="https://www.linkedin.com/in/chamurv" target="_blank" rel="noopener" aria-label="LinkedIn">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1S4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.78-2.2 4.05 0 4.8 2.67 4.8 6.16V24h-4v-7.9c0-1.89-.03-4.32-2.63-4.32-2.63 0-3.03 2.05-3.03 4.18V24h-4V8z"/></svg>
     </a>
+    <!-- Updated email icon -->
     <a class="icon" href="mailto:me@chamu.io" aria-label="Email">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5v11A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5v-11Z"/></svg>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+        <polyline points="3 7.5 12 13 21 7.5"></polyline>
+      </svg>
     </a>
   </div>
   <div>© <span id="year"></span> Chamu</div>
