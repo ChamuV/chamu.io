@@ -28,5 +28,15 @@
     "status": "active",
     "link": "/projects/rpi-face-recognition/",
     "updated": "2025-10-06"
+  },
+  {
+    "id": "fista-palm",
+    "name": "FISTA-PALM",
+    "area": "Mathematics",
+    "keywords": ["Nonconvex Optimisation", "Prox operator", "Sparse Matrix Factorisation"],
+    "location": "Oxford",
+    "status": "complete",
+    "link": "/projects/fista-palm/",
+    "updated": "2025-10-06"
   }
 ]
