@@ -12,6 +12,15 @@
   max-width: 300px;
   min-width: 260px;               /* avoid squish */
 }
+.project-page .left-col {
+  flex: 0 0 300px;
+  max-width: 300px;
+  position: sticky;
+  top: 5rem; /* adjust this to match your header height */
+  align-self: flex-start; /* keeps it from stretching */
+  height: fit-content;
+}
+
 .project-page .right-col{
   flex: 1 1 auto;                 /* take remaining space */
   min-width: 0;                   /* IMPORTANT: allow shrinking so it won't wrap */
@@ -84,4 +93,11 @@ footer .icon:hover{
 }
 footer .icon svg{
   width: 20px; height: 20px; fill: currentColor;
+}
+
+@media (max-width: 800px) {
+  .project-page .left-col {
+    position: static;
+    top: auto;
+  }
 }
