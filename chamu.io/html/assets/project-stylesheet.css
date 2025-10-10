@@ -1,103 +1,103 @@
-/* ===== Two-column Project Page ===== */
-.project-page .project-layout{
+/* ===== Two-column Project Page Layout ===== */
+.project-page .project-layout {
   display: flex;
   align-items: flex-start;
   gap: 1.5rem;
-  flex-wrap: nowrap;              /* keep two columns on wide screens */
+  flex-wrap: nowrap; /* keep two columns on wide screens */
 }
 
-/* Fixed left rail, fluid right side */
-.project-page .left-col{
-  flex: 0 0 300px;                /* fixed width left column */
-  max-width: 300px;
-  min-width: 260px;               /* avoid squish */
-}
+/* --- Sticky Left Column (Info panel) --- */
 .project-page .left-col {
-  flex: 0 0 300px;
+  flex: 0 0 300px;          /* fixed width */
   max-width: 300px;
+  min-width: 260px;         /* prevent squish */
   position: sticky;
-  top: 5rem; /* adjust this to match your header height */
-  align-self: flex-start; /* keeps it from stretching */
+  top: 5rem;                /* offset for header */
+  align-self: flex-start;   /* keep top-aligned */
   height: fit-content;
 }
 
-.project-page .right-col{
-  flex: 1 1 auto;                 /* take remaining space */
-  min-width: 0;                   /* IMPORTANT: allow shrinking so it won't wrap */
+/* --- Right Column (Main content) --- */
+.project-page .right-col {
+  flex: 1 1 auto;           /* fills remaining space */
+  min-width: 0;             /* prevent unwanted wrapping */
 }
 
-/* Responsive: stack on small screens */
-@media (max-width: 900px){
-  .project-page .project-layout{ flex-wrap: wrap; }
+/* --- Responsive Stack on Narrow Screens --- */
+@media (max-width: 900px) {
+  .project-page .project-layout {
+    flex-wrap: wrap;
+  }
   .project-page .left-col,
-  .project-page .right-col{
+  .project-page .right-col {
     flex: 1 1 100%;
     max-width: 100%;
   }
+  .project-page .left-col {
+    position: static;
+    top: auto;
+  }
 }
 
-/* --- Opaque Cards --- */
-.project-page .card{
-  background: #ffffff;            /* solid opaque */
+/* ===== Card Styling ===== */
+.project-page .card {
+  background: #ffffff; /* solid opaque to hide boids */
   position: relative;
-  z-index: 2;                     /* above boids */
+  z-index: 2;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   border: 1px solid rgba(0,0,0,0.08);
   border-radius: 12px;
   padding: 1rem 1.25rem;
-  transition: transform .15s ease, box-shadow .15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.project-page .card:hover{
+.project-page .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 24px rgba(0,0,0,0.1);
 }
 
-/* --- Boids canvas stays behind everything --- */
+/* --- Boids Background Layer Control --- */
 .project-page header,
 .project-page main,
-.project-page footer{
+.project-page footer {
   position: relative;
   z-index: 2;
 }
-#boids-bg{
+#boids-bg {
   z-index: -1 !important;
   mix-blend-mode: normal;
 }
 
 /* ===== Footer Styling ===== */
-footer{
+footer {
   margin: 3rem 0 2rem;
   text-align: center;
   color: var(--muted);
   font-style: italic;
 }
-footer .icons{
+footer .icons {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin: .8rem 0;
+  margin: 0.8rem 0;
 }
-footer .icon{
+footer .icon {
   display: inline-flex;
-  width: 36px; height: 36px;
-  align-items: center; justify-content: center;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
   border-radius: 10px;
   background: #fff;
-  border: 1px solid rgba(0,0,0,.06);
+  border: 1px solid rgba(0,0,0,0.06);
   color: var(--brand);
-  transition: box-shadow .2s ease, transform .2s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-footer .icon:hover{
-  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+footer .icon:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
   transform: translateY(-2px);
 }
-footer .icon svg{
-  width: 20px; height: 20px; fill: currentColor;
-}
-
-@media (max-width: 800px) {
-  .project-page .left-col {
-    position: static;
-    top: auto;
-  }
+footer .icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }

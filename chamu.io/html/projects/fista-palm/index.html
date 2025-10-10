@@ -5,241 +5,249 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>FISTA-PALM • Chamu</title>
 
-  <!-- Shared styles -->
+  <!-- Shared styles (root-relative; works on your deployed site) -->
   <link rel="stylesheet" href="/assets/site.css"/>
   <link rel="stylesheet" href="/assets/project-stylesheet.css"/>
 
   <link rel="canonical" href="https://chamu.io/projects/fista-palm/">
-</head>
 
-<body data-bg="boids" class="project-page">
-<header class="site-header">
-  <nav class="nav">
-    <a class="brand" href="/">Chamu.io</a>
-    <div class="menu">
-      <a href="/about/">About</a>
-      <a href="/resume/">Resume</a>
-      <a href="/projects/">Projects</a>
-      <a href="/stats/">Stats</a>
-      <a href="/contact/">Contact</a>
-    </div>
-  </nav>
-</header>
-
-<main class="wrap">
-  <h1>FISTA-PALM</h1>
-
-  <div class="project-layout">
-    <!-- LEFT COLUMN -->
-    <div class="left-col">
-      <!-- Info card -->
-      <div class="card">
-        <p style="margin:.25rem 0;color:var(--muted)">
-          <em>Area:</em> Mathematics • <em>Location:</em> Oxford
-        </p>
-        <p>
-          <span class="pill" style="background:#e7f5ee;color:#1f5134;border-color:#b8e6cf;">complete</span>
-        </p>
-
-        <h3>Keywords</h3>
-        <p>Nonconvex Optimisation, Prox operator, Sparse Matrix Factorisation</p>
-
-        <h3>Updated</h3>
-        <p>2025-10-06</p>
-      </div>
-
-      <!-- Report card -->
-        <div class="card" style="margin-top:1rem;">
-            <h3>Report</h3>
-            <p>
-              <a href="FISTA-PALM.pdf" target="_blank" rel="noopener" type="application/pdf">
-                📄 Read the detailed report (PDF)
-              </a>
-            </p>
-          </div>
-
-      <!-- Repository card -->
-      <div class="card" style="margin-top:1rem;">
-        <h3>Repository</h3>
-        <p>
-          <a href="https://github.com/your-username/fista-palm" target="_blank" rel="noopener">
-            🔗 github.com/your-username/fista-palm
-          </a>
-        </p>
-      </div>
-    </div>
-
-    <!-- RIGHT COLUMN -->
-    <div class="right-col">
-      <!-- Overview -->
-      <div class="card">
-        <h3>Overview</h3>
-        <p>
-          This project started as part of an optimisation assignment. My supervisor suggested I look into the
-          <strong>PALM algorithm</strong> — short for <em>Proximal Alternating Linearized Minimisation</em> <a href="#refs-1">[1]</a> —
-          which is used for tackling <strong>non-convex, non-smooth optimisation problems</strong>.
-        </p>
-        <p>
-          I thought I could make PALM run faster and had the idea of borrowing concepts from another well-known method,
-          <strong>FISTA</strong> (<em>Fast Iterative Shrinkage-Thresholding Algorithm</em>) <a href="#refs-2">[2]</a>, which uses
-          <em>momentum-based acceleration</em>. In the end, I built a kind of hybrid <strong>“FISTA-PALM”</strong> version that keeps
-          the structure of PALM but adds an acceleration step to speed up convergence.
-        </p>
-      </div>
-
-      <!-- Description -->
-      <div class="card" style="margin-top:1rem;">
-        <h3>Description</h3>
-      
-        <p>
-          This project explores how momentum-based acceleration can improve the convergence speed of
-          <strong>Proximal Alternating Linearised Minimisation (PALM)</strong>—a method widely used for 
-          solving <strong>non-convex, non-smooth optimisation problems</strong> of the form:
-        </p>
-      
-        <p style="text-align:center;">
-          $$\min_{x,\,y}\; F(x,y) = f(x) + g(y) + H(x,y),$$
-        </p>
-      
-        <p>
-          where \(f\) and \(g\) are possibly non-smooth functions with simple proximal operators, 
-          and \(H(x,y)\) is a smooth coupling term with Lipschitz-continuous partial gradients.  
-          The standard PALM algorithm alternates between proximal updates on each variable block:
-        </p>
-      
-        <p style="text-align:center;">
-          \[
-          \begin{aligned}
-          x^{k+1} &= \operatorname{prox}_{\lambda_k f}\!\big(x^k - \lambda_k \nabla_x H(x^k, y^k)\big), \\
-          y^{k+1} &= \operatorname{prox}_{\mu_k g}\!\big(y^k - \mu_k \nabla_y H(x^{k+1}, y^k)\big),
-          \end{aligned}
-          \]
-        </p>
-      
-        <p>
-          Although PALM is guaranteed to converge under mild assumptions, it often suffers from slow progress,
-          as updates proceed independently without any momentum or extrapolation.  
-          To address this, a <strong>FISTA-inspired acceleration</strong> step was introduced,
-          yielding a hybrid scheme—<strong>FISTA–PALM</strong>—that combines PALM’s block-wise structure
-          with Nesterov-type inertial dynamics.
-        </p>
-      
-        <p>
-          At each iteration, extrapolated (“look-ahead”) points are formed as:
-        </p>
-      
-        <p style="text-align:center;">
-          \[
-          \tilde{x}^k = x^k + \beta_k (x^k - x^{k-1}), \quad
-          \tilde{y}^k = y^k + \beta_k (y^k - y^{k-1}),
-          \]
-        </p>
-      
-        <p>
-          where the momentum coefficient \(\beta_k\) follows the classical
-          <em>Nesterov update rule</em>:
-        </p>
-      
-        <p style="text-align:center;">
-          \[
-          t_{k+1} = \frac{1 + \sqrt{1 + 4t_k^2}}{2}, \qquad
-          \beta_k = \frac{t_k - 1}{t_{k+1}}.
-          \]
-        </p>
-      
-        <div style="
-          border: 1px solid rgba(0,0,0,0.15);
-          border-radius: 10px;
-          padding: 1rem 1.25rem;
-          background: #fafafa;
-          margin: 1.25rem 0;">
-          <h4 style="margin-top:0;">Algorithm: FISTA–PALM</h4>
-          <ol>
-            <li>
-              <strong>Initialisation:</strong>  
-              Choose starting points \(x^0, y^0\), step sizes \(\lambda_k, \mu_k > 0\),
-              and set \(t_0 = 1\).
-            </li>
-            <li>
-              <strong>For</strong> \(k = 0, 1, 2, \ldots\):
-              <ul>
-                <li>
-                  <strong>Compute momentum parameters:</strong><br>
-                  \(t_{k+1} = \frac{1 + \sqrt{1 + 4t_k^2}}{2}\), 
-                  \(\beta_k = \frac{t_k - 1}{t_{k+1}}\).
-                </li>
-                <li>
-                  <strong>Extrapolate:</strong><br>
-                  \(\tilde{x}^k = x^k + \beta_k (x^k - x^{k-1})\),  
-                  \(\tilde{y}^k = y^k + \beta_k (y^k - y^{k-1})\).
-                </li>
-                <li>
-                  <strong>Update first block:</strong><br>
-                  \(x^{k+1} = \operatorname{prox}_{\lambda_k f}
-                  \big(\tilde{x}^k - \lambda_k \nabla_x H(\tilde{x}^k, \tilde{y}^k)\big)\).
-                </li>
-                <li>
-                  <strong>Update second block:</strong><br>
-                  \(y^{k+1} = \operatorname{prox}_{\mu_k g}
-                  \big(\tilde{y}^k - \mu_k \nabla_y H(x^{k+1}, \tilde{y}^k)\big)\).
-                </li>
-                <li>
-                  Stop when a convergence criterion (e.g., 
-                  \(\|x^{k+1} - x^k\| + \|y^{k+1} - y^k\|\) below tolerance) is met.
-                </li>
-              </ul>
-            </li>
-          </ol>
-        </div>
-      
-        <p>
-          The hybrid algorithm achieved noticeably faster convergence than the vanilla PALM method 
-          on benchmark problems such as sparse matrix factorisation and dictionary learning.  
-          In most experiments, <em>FISTA–PALM</em> reached comparable objective values in roughly 
-          half the number of iterations required by PALM, confirming that
-          <strong>momentum-based acceleration can be successfully integrated into alternating proximal schemes</strong>.
-        </p>
-      </div>
-
-      <!-- References -->
-      <div class="card" style="margin-top:1rem;">
-        <h3>References</h3>
-        <ol style="padding-left:1.25rem; margin:.5rem 0 0;">
-          <li id="refs-1">
-            Jérôme Bolte, Shoham Sabach, and Marc Teboulle, “Proximal Alternating Linearized Minimization for
-            Nonconvex and Nonsmooth Problems,” <em>Mathematical Programming</em> 146 (2014) 459–494.
-            doi:10.1007/s10107-013-0701-9.
-          </li>
-          <li id="refs-2">
-            Amir Beck and Marc Teboulle, “A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems,”
-            <em>SIAM Journal on Imaging Sciences</em> 2(1) (2009) 183–202. doi:10.1137/080716542.
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <p style="margin-top:1rem;"><a href="/projects/">← Back to Projects</a></p>
-</main>
-
-<!-- Footer include -->
-<div id="footer-placeholder"></div>
-<script>
-  fetch("/assets/footer.html")
-    .then(r => r.text())
-    .then(html => {
-      document.getElementById("footer-placeholder").innerHTML = html;
-      const y = document.getElementById("year");
-      if (y) y.textContent = new Date().getFullYear();
-    });
-</script>
-
-<script src="/boids-background.js" defer></script>
-
-<script>
+  <!-- MathJax config (must appear before MathJax script) -->
+  <script>
     window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
-  
+</head>
+
+<body data-bg="boids" class="project-page">
+  <!-- Optional canvas placeholder to ensure boids stay behind -->
+  <canvas id="boids-bg" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="/">Chamu.io</a>
+      <div class="menu">
+        <a href="/about/">About</a>
+        <a href="/resume/">Resume</a>
+        <a href="/projects/">Projects</a>
+        <a href="/stats/">Stats</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="project-layout">
+      <!-- LEFT COLUMN (sticky) -->
+      <div class="left-col">
+        <h1 style="margin-top:0;">FISTA-PALM</h1>
+
+        <!-- Info card -->
+        <div class="card">
+          <p style="margin:.25rem 0;color:var(--muted)">
+            <em>Area:</em> Mathematics • <em>Location:</em> Oxford
+          </p>
+          <p>
+            <span class="pill" style="background:#e7f5ee;color:#1f5134;border-color:#b8e6cf;">complete</span>
+          </p>
+
+          <h3>Keywords</h3>
+          <p>Nonconvex Optimisation, Prox operator, Sparse Matrix Factorisation</p>
+
+          <h3>Updated</h3>
+          <p>2025-10-06</p>
+        </div>
+
+        <!-- Report card -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Report</h3>
+          <p>
+            <a href="FISTA-PALM.pdf" target="_blank" rel="noopener" type="application/pdf">
+              📄 Read the detailed report (PDF)
+            </a>
+          </p>
+        </div>
+
+        <!-- Repository card -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Repository</h3>
+          <p>
+            <a href="https://github.com/your-username/fista-palm" target="_blank" rel="noopener">
+              🔗 github.com/your-username/fista-palm
+            </a>
+          </p>
+        </div>
+
+        <!-- Back link -->
+        <p style="margin-top:1rem;">
+          <a href="/projects/">← Back to Projects</a>
+        </p>
+      </div>
+
+      <!-- RIGHT COLUMN (scrolls) -->
+      <div class="right-col">
+        <!-- Overview -->
+        <div class="card">
+          <h3>Overview</h3>
+          <p>
+            This project started as part of an optimisation assignment. My supervisor suggested I look into the
+            <strong>PALM algorithm</strong> — short for <em>Proximal Alternating Linearized Minimisation</em> <a href="#refs-1">[1]</a> —
+            which is used for tackling <strong>non-convex, non-smooth optimisation problems</strong>.
+          </p>
+          <p>
+            I thought I could make PALM run faster and had the idea of borrowing concepts from another well-known method,
+            <strong>FISTA</strong> (<em>Fast Iterative Shrinkage-Thresholding Algorithm</em>) <a href="#refs-2">[2]</a>, which uses
+            <em>momentum-based acceleration</em>. In the end, I built a kind of hybrid <strong>“FISTA-PALM”</strong> version that keeps
+            the structure of PALM but adds an acceleration step to speed up convergence.
+          </p>
+        </div>
+
+        <!-- Description (LaTeX-ready) -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Description</h3>
+
+          <p>
+            This project explores how momentum-based acceleration can improve the convergence speed of
+            <strong>Proximal Alternating Linearised Minimisation (PALM)</strong>—a method widely used for 
+            solving <strong>non-convex, non-smooth optimisation problems</strong> of the form:
+          </p>
+
+          <p style="text-align:center;">
+            $$\min_{x,\,y}\; F(x,y) = f(x) + g(y) + H(x,y),$$
+          </p>
+
+          <p>
+            where \(f\) and \(g\) are possibly non-smooth functions with simple proximal operators, 
+            and \(H(x,y)\) is a smooth coupling term with Lipschitz-continuous partial gradients.  
+            The standard PALM algorithm alternates between proximal updates on each variable block:
+          </p>
+
+          <p style="text-align:center;">
+            \[
+            \begin{aligned}
+            x^{k+1} &= \operatorname{prox}_{\lambda_k f}\!\big(x^k - \lambda_k \nabla_x H(x^k, y^k)\big), \\
+            y^{k+1} &= \operatorname{prox}_{\mu_k g}\!\big(y^k - \mu_k \nabla_y H(x^{k+1}, y^k)\big),
+            \end{aligned}
+            \]
+          </p>
+
+          <p>
+            Although PALM is guaranteed to converge under mild assumptions, it often suffers from slow progress,
+            as updates proceed independently without any momentum or extrapolation.  
+            To address this, a <strong>FISTA-inspired acceleration</strong> step was introduced,
+            yielding a hybrid scheme—<strong>FISTA–PALM</strong>—that combines PALM’s block-wise structure
+            with Nesterov-type inertial dynamics.
+          </p>
+
+          <p>
+            At each iteration, extrapolated (“look-ahead”) points are formed as:
+          </p>
+
+          <p style="text-align:center;">
+            \[
+            \tilde{x}^k = x^k + \beta_k (x^k - x^{k-1}), \quad
+            \tilde{y}^k = y^k + \beta_k (y^k - y^{k-1}),
+            \]
+          </p>
+
+          <p>
+            where the momentum coefficient \(\beta_k\) follows the classical
+            <em>Nesterov update rule</em>:
+          </p>
+
+          <p style="text-align:center;">
+            \[
+            t_{k+1} = \frac{1 + \sqrt{1 + 4t_k^2}}{2}, \qquad
+            \beta_k = \frac{t_k - 1}{t_{k+1}}.
+            \]
+          </p>
+
+          <div style="
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            background: #fafafa;
+            margin: 1.25rem 0;">
+            <h4 style="margin-top:0;">Algorithm: FISTA–PALM</h4>
+            <ol>
+              <li>
+                <strong>Initialisation:</strong>  
+                Choose starting points \(x^0, y^0\), step sizes \(\lambda_k, \mu_k > 0\),
+                and set \(t_0 = 1\).
+              </li>
+              <li>
+                <strong>For</strong> \(k = 0, 1, 2, \ldots\):
+                <ul>
+                  <li>
+                    <strong>Compute momentum parameters:</strong><br>
+                    \(t_{k+1} = \frac{1 + \sqrt{1 + 4t_k^2}}{2}\), 
+                    \(\beta_k = \frac{t_k - 1}{t_{k+1}}\).
+                  </li>
+                  <li>
+                    <strong>Extrapolate:</strong><br>
+                    \(\tilde{x}^k = x^k + \beta_k (x^k - x^{k-1})\),  
+                    \(\tilde{y}^k = y^k + \beta_k (y^k - y^{k-1})\).
+                  </li>
+                  <li>
+                    <strong>Update first block:</strong><br>
+                    \(x^{k+1} = \operatorname{prox}_{\lambda_k f}
+                    \big(\tilde{x}^k - \lambda_k \nabla_x H(\tilde{x}^k, \tilde{y}^k)\big)\).
+                  </li>
+                  <li>
+                    <strong>Update second block:</strong><br>
+                    \(y^{k+1} = \operatorname{prox}_{\mu_k g}
+                    \big(\tilde{y}^k - \mu_k \nabla_y H(x^{k+1}, \tilde{y}^k)\big)\).
+                  </li>
+                  <li>
+                    Stop when a convergence criterion (e.g., 
+                    \(\|x^{k+1} - x^k\| + \|y^{k+1} - y^k\|\) below tolerance) is met.
+                  </li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+
+          <p>
+            The hybrid algorithm achieved noticeably faster convergence than the vanilla PALM method 
+            on benchmark problems such as sparse matrix factorisation and dictionary learning.  
+            In most experiments, <em>FISTA–PALM</em> reached comparable objective values in roughly 
+            half the number of iterations required by PALM, confirming that
+            <strong>momentum-based acceleration can be successfully integrated into alternating proximal schemes</strong>.
+          </p>
+        </div>
+
+        <!-- References -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>References</h3>
+          <ol style="padding-left:1.25rem; margin:.5rem 0 0;">
+            <li id="refs-1">
+              Jérôme Bolte, Shoham Sabach, and Marc Teboulle, “Proximal Alternating Linearized Minimization for
+              Nonconvex and Nonsmooth Problems,” <em>Mathematical Programming</em> 146 (2014) 459–494.
+              doi:10.1007/s10107-013-0701-9.
+            </li>
+            <li id="refs-2">
+              Amir Beck and Marc Teboulle, “A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems,”
+              <em>SIAM Journal on Imaging Sciences</em> 2(1) (2009) 183–202. doi:10.1137/080716542.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer include -->
+  <div id="footer-placeholder"></div>
+  <script>
+    // Load shared footer (note: this won't work from file:// — use a local server)
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+        const y = document.getElementById("year");
+        if (y) y.textContent = new Date().getFullYear();
+      });
+  </script>
+
+  <!-- Boids script after the canvas placeholder -->
+  <script src="/boids-background.js" defer></script>
 </body>
 </html>
