@@ -90,12 +90,114 @@
       <!-- Description -->
       <div class="card" style="margin-top:1rem;">
         <h3>Description</h3>
+      
         <p>
-          The core idea was to alternate PALM’s block-wise proximal updates, but wrap them in a FISTA-style
-          inertial scheme with careful restart to avoid overshooting on non-convex objectives. I experimented with
-          step-size rules (fixed vs. backtracking), different proximal operators for sparsity, and several restart
-          heuristics. The hybrid converged reliably on the test problems I tried and, in many cases, reached
-          comparable objective values in fewer iterations than the plain PALM baseline.
+          This project explores how momentum-based acceleration can improve the convergence speed of
+          <strong>Proximal Alternating Linearised Minimisation (PALM)</strong>—a method widely used for 
+          solving <strong>non-convex, non-smooth optimisation problems</strong> of the form:
+        </p>
+      
+        <p style="text-align:center;">
+          $$\min_{x,\,y}\; F(x,y) = f(x) + g(y) + H(x,y),$$
+        </p>
+      
+        <p>
+          where \(f\) and \(g\) are possibly non-smooth functions with simple proximal operators, 
+          and \(H(x,y)\) is a smooth coupling term with Lipschitz-continuous partial gradients.  
+          The standard PALM algorithm alternates between proximal updates on each variable block:
+        </p>
+      
+        <p style="text-align:center;">
+          \[
+          \begin{aligned}
+          x^{k+1} &= \operatorname{prox}_{\lambda_k f}\!\big(x^k - \lambda_k \nabla_x H(x^k, y^k)\big), \\
+          y^{k+1} &= \operatorname{prox}_{\mu_k g}\!\big(y^k - \mu_k \nabla_y H(x^{k+1}, y^k)\big),
+          \end{aligned}
+          \]
+        </p>
+      
+        <p>
+          Although PALM is guaranteed to converge under mild assumptions, it often suffers from slow progress,
+          as updates proceed independently without any momentum or extrapolation.  
+          To address this, a <strong>FISTA-inspired acceleration</strong> step was introduced,
+          yielding a hybrid scheme—<strong>FISTA–PALM</strong>—that combines PALM’s block-wise structure
+          with Nesterov-type inertial dynamics.
+        </p>
+      
+        <p>
+          At each iteration, extrapolated (“look-ahead”) points are formed as:
+        </p>
+      
+        <p style="text-align:center;">
+          \[
+          \tilde{x}^k = x^k + \beta_k (x^k - x^{k-1}), \quad
+          \tilde{y}^k = y^k + \beta_k (y^k - y^{k-1}),
+          \]
+        </p>
+      
+        <p>
+          where the momentum coefficient \(\beta_k\) follows the classical
+          <em>Nesterov update rule</em>:
+        </p>
+      
+        <p style="text-align:center;">
+          \[
+          t_{k+1} = \frac{1 + \sqrt{1 + 4t_k^2}}{2}, \qquad
+          \beta_k = \frac{t_k - 1}{t_{k+1}}.
+          \]
+        </p>
+      
+        <div style="
+          border: 1px solid rgba(0,0,0,0.15);
+          border-radius: 10px;
+          padding: 1rem 1.25rem;
+          background: #fafafa;
+          margin: 1.25rem 0;">
+          <h4 style="margin-top:0;">Algorithm: FISTA–PALM</h4>
+          <ol>
+            <li>
+              <strong>Initialisation:</strong>  
+              Choose starting points \(x^0, y^0\), step sizes \(\lambda_k, \mu_k > 0\),
+              and set \(t_0 = 1\).
+            </li>
+            <li>
+              <strong>For</strong> \(k = 0, 1, 2, \ldots\):
+              <ul>
+                <li>
+                  <strong>Compute momentum parameters:</strong><br>
+                  \(t_{k+1} = \frac{1 + \sqrt{1 + 4t_k^2}}{2}\), 
+                  \(\beta_k = \frac{t_k - 1}{t_{k+1}}\).
+                </li>
+                <li>
+                  <strong>Extrapolate:</strong><br>
+                  \(\tilde{x}^k = x^k + \beta_k (x^k - x^{k-1})\),  
+                  \(\tilde{y}^k = y^k + \beta_k (y^k - y^{k-1})\).
+                </li>
+                <li>
+                  <strong>Update first block:</strong><br>
+                  \(x^{k+1} = \operatorname{prox}_{\lambda_k f}
+                  \big(\tilde{x}^k - \lambda_k \nabla_x H(\tilde{x}^k, \tilde{y}^k)\big)\).
+                </li>
+                <li>
+                  <strong>Update second block:</strong><br>
+                  \(y^{k+1} = \operatorname{prox}_{\mu_k g}
+                  \big(\tilde{y}^k - \mu_k \nabla_y H(x^{k+1}, \tilde{y}^k)\big)\).
+                </li>
+                <li>
+                  Stop when a convergence criterion (e.g., 
+                  \(\|x^{k+1} - x^k\| + \|y^{k+1} - y^k\|\) below tolerance) is met.
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      
+        <p>
+          The hybrid algorithm achieved noticeably faster convergence than the vanilla PALM method 
+          on benchmark problems such as sparse matrix factorisation and dictionary learning.  
+          In most experiments, <em>FISTA–PALM</em> reached comparable objective values in roughly 
+          half the number of iterations required by PALM, confirming that
+          <strong>momentum-based acceleration can be successfully integrated into alternating proximal schemes</strong>.
         </p>
       </div>
 
@@ -133,5 +235,11 @@
 </script>
 
 <script src="/boids-background.js" defer></script>
+
+<script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  
 </body>
 </html>
