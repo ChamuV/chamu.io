@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>IMEX Schemes • Chamu</title>
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="/assets/site.css"/>
+  <link rel="stylesheet" href="/assets/project-stylesheet.css"/>
+
+  <link rel="canonical" href="https://chamu.io/projects/imex-schemes/">
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+
+<body data-bg="boids" class="project-page">
+  <canvas id="boids-bg" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="/">Chamu.io</a>
+      <div class="menu">
+        <a href="/about/">About</a>
+        <a href="/resume/">Resume</a>
+        <a href="/projects/">Projects</a>
+        <a href="/stats/">Stats</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="project-layout">
+      <!-- LEFT COLUMN (sticky) -->
+      <div class="left-col">
+        <h1 style="margin-top:0;">IMEX Schemes</h1>
+
+        <!-- Info card -->
+        <div class="card">
+          <p style="margin:.25rem 0;color:var(--muted)">
+            <em>Area:</em> Numerical Analysis • <em>Location:</em> Oxford
+          </p>
+          <p>
+            <span class="pill" style="background:#e7f5ee;color:#1f5134;border-color:#b8e6cf;">active</span>
+          </p>
+
+          <h3>Keywords</h3>
+          <p>IMEX, Numerical schemes for PDEs, Multistep</p>
+
+          <h3>Updated</h3>
+          <p>2025-10-10</p>
+        </div>
+
+        <!-- Report card -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Report</h3>
+          <p>
+            <a href="IMEX-Schemes.pdf" target="_blank" rel="noopener" type="application/pdf">
+              📄 Read the detailed report (PDF)
+            </a>
+          </p>
+        </div>
+
+        <!-- Repository card -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Repository</h3>
+          <p>
+            <a href="https://github.com/your-username/imex-schemes" target="_blank" rel="noopener">
+              🔗 github.com/your-username/imex-schemes
+            </a>
+          </p>
+        </div>
+
+        <p style="margin-top:1rem;">
+          <a href="/projects/">← Back to Projects</a>
+        </p>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-col">
+        <!-- Overview -->
+        <div class="card">
+          <h3>Overview</h3>
+          <p>
+            This isn’t really a standalone project but rather a numerical skill I picked up while working on several
+            PDE-based models. I first came across <strong>IMEX (Implicit–Explicit) schemes</strong> during my pattern
+            formation coursework and found them extremely useful for speeding up long simulations without losing
+            stability or accuracy. I now use them regularly as part of my solver framework and plan to keep refining
+            their implementation in future work.
+          </p>
+
+          <p>
+            <strong>IMEX schemes</strong> are time-stepping methods that split a system into stiff and non-stiff components.
+            The stiff terms are handled implicitly to maintain numerical stability, while the non-stiff parts are treated
+            explicitly to save computation. This balance makes IMEX schemes particularly effective for reaction–diffusion
+            and nonlinear diffusion problems, where fully explicit methods would require prohibitively small time steps
+            and fully implicit ones would be computationally expensive.
+          </p>
+        </div>
+
+        <!-- Description -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Description</h3>
+          <p>
+            We consider semi-discrete systems of the form
+          </p>
+          <p style="text-align:center;">
+            $$\frac{du}{dt} = F(u) + G(u),$$
+          </p>
+          <p>
+            where \(F(u)\) is the <em>non-stiff</em> (explicit) term and \(G(u)\) is the 
+            <em>stiff</em> (implicit) part.  
+            An IMEX scheme integrates \(F\) using an explicit Adams–Bashforth (AB) method 
+            and \(G\) using an implicit multistep method such as Adams–Moulton (AM) 
+            or Backward Differentiation Formula (BDF).  
+            The general two-step IMEX–AB2–AM2 scheme is:
+          </p>
+
+          <p style="text-align:center;">
+            \[
+            \frac{u^{n+1} - u^n}{\Delta t}
+            = \tfrac{3}{2} F(u^n) - \tfrac{1}{2} F(u^{n-1})
+              + \tfrac{1}{2} \big[G(u^{n+1}) + G(u^n)\big].
+            \]
+          </p>
+
+          <p>
+            Here, \(F\) (explicit) can represent nonlinear reaction terms, while \(G\) (implicit)
+            captures diffusive or stiff coupling operators that would otherwise cause 
+            numerical instability in explicit schemes.  
+            The resulting linear system for \(u^{n+1}\) is efficiently solved using 
+            pre-assembled sparse matrices (e.g. with <code>scipy.sparse.linalg.spsolve</code>).
+          </p>
+
+          <div style="
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            background: #fafafa;
+            margin: 1.25rem 0;">
+            <h4 style="margin-top:0;">Algorithm: IMEX–AB2–AM2</h4>
+            <ol>
+              <li><strong>Given:</strong> \(u^0, u^1\), time step $\Delta t$.</li>
+              <li>For each $n = 1, 2, \dots, N-1$:
+                <ul>
+                  <li>Compute explicit part: \(F(u^n)\) and \(F(u^{n-1})\).</li>
+                  <li>Form RHS: \(\text{RHS} = u^n + \tfrac{\Delta t}{2}\big(3F(u^n) - F(u^{n-1}) + G(u^n)\big)\).</li>
+                  <li>Solve implicitly: \((I - \tfrac{\Delta t}{2}A_G)u^{n+1} = \text{RHS}\), where \(A_G\) is the Jacobian or diffusion operator.</li>
+                </ul>
+              </li>
+              <li>Repeat until final time \(T\).</li>
+            </ol>
+          </div>
+
+          <p>
+            Results showed that IMEX schemes offer a robust compromise between 
+            accuracy and efficiency, maintaining stability at large $\Delta t$ values 
+            while preserving second-order temporal convergence.  
+            In nonlinear diffusion models, IMEX integration remained stable even 
+            when explicit schemes failed, confirming its suitability for 
+            biological PDE systems with mixed stiffness.
+          </p>
+        </div>
+
+        <!-- References -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>References</h3>
+          <ol style="padding-left:1.25rem; margin:.5rem 0 0;">
+            <li>
+              U. Ascher, S. Ruuth, and R. Spiteri, “Implicit–Explicit Runge–Kutta Methods for Time-Dependent PDEs,” 
+              <em>Applied Numerical Mathematics</em> 25 (1997) 151–167. doi:10.1016/S0168-9274(97)00056-1.
+            </li>
+            <li>
+              S. Boscarino, L. Pareschi, and G. Russo, “Implicit–Explicit Runge–Kutta Schemes for Hyperbolic Systems and Kinetic Equations in the Diffusion Limit,” 
+              <em>SIAM J. Sci. Comput.</em> 35 (2013) A22–A51. doi:10.1137/120882512.
+            </li>
+            <li>
+              M. J. Simpson and S. W. McCue, “Fisher–KPP-type Models of Biological Invasion,” 
+              <em>Proc. R. Soc. A</em> 480 (2024) 20240186. doi:10.1098/rspa.2024.0186.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+        const y = document.getElementById("year");
+        if (y) y.textContent = new Date().getFullYear();
+      });
+  </script>
+
+  <script src="/boids-background.js" defer></script>
+</body>
+</html>
