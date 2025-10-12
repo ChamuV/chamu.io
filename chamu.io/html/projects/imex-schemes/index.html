@@ -103,70 +103,74 @@
           </p>
         </div>
 
+       
+       
         <!-- Description -->
         <div class="card" style="margin-top:1rem;">
-          <h3>Description</h3>
-          <p>
-            We consider semi-discrete systems of the form
-          </p>
-          <p style="text-align:center;">
-            $$\frac{du}{dt} = F(u) + G(u),$$
-          </p>
-          <p>
-            where \(F(u)\) is the <em>non-stiff</em> (explicit) term and \(G(u)\) is the 
-            <em>stiff</em> (implicit) part.  
-            An IMEX scheme integrates \(F\) using an explicit Adams–Bashforth (AB) method 
-            and \(G\) using an implicit multistep method such as Adams–Moulton (AM) 
-            or Backward Differentiation Formula (BDF).  
-            The general two-step IMEX–AB2–AM2 scheme is:
-          </p>
-
-          <p style="text-align:center;">
-            \[
-            \frac{u^{n+1} - u^n}{\Delta t}
-            = \tfrac{3}{2} F(u^n) - \tfrac{1}{2} F(u^{n-1})
-              + \tfrac{1}{2} \big[G(u^{n+1}) + G(u^n)\big].
-            \]
-          </p>
-
-          <p>
-            Here, \(F\) (explicit) can represent nonlinear reaction terms, while \(G\) (implicit)
-            captures diffusive or stiff coupling operators that would otherwise cause 
-            numerical instability in explicit schemes.  
-            The resulting linear system for \(u^{n+1}\) is efficiently solved using 
-            pre-assembled sparse matrices (e.g. with <code>scipy.sparse.linalg.spsolve</code>).
-          </p>
-
-          <div style="
-            border: 1px solid rgba(0,0,0,0.15);
-            border-radius: 10px;
-            padding: 1rem 1.25rem;
-            background: #fafafa;
-            margin: 1.25rem 0;">
-            <h4 style="margin-top:0;">Algorithm: IMEX–AB2–AM2</h4>
-            <ol>
-              <li><strong>Given:</strong> \(u^0, u^1\), time step $\Delta t$.</li>
-              <li>For each $n = 1, 2, \dots, N-1$:
-                <ul>
-                  <li>Compute explicit part: \(F(u^n)\) and \(F(u^{n-1})\).</li>
-                  <li>Form RHS: \(\text{RHS} = u^n + \tfrac{\Delta t}{2}\big(3F(u^n) - F(u^{n-1}) + G(u^n)\big)\).</li>
-                  <li>Solve implicitly: \((I - \tfrac{\Delta t}{2}A_G)u^{n+1} = \text{RHS}\), where \(A_G\) is the Jacobian or diffusion operator.</li>
-                </ul>
-              </li>
-              <li>Repeat until final time \(T\).</li>
-            </ol>
+            <h3>Description</h3>
+        
+            <p>
+              Partial differential equations are inherently difficult to solve, and analytical solutions exist only for a limited class of problems under specific simplifying assumptions. One practical approach to studying such systems is through numerical approximation, where the continuous domain is replaced by a discrete computational grid and the solution is advanced in time using iterative schemes.
+            </p>
+        
+            <p>
+              We begin by defining the spatial domain $[0,L]$, which is divided into $N$ equal subintervals, giving a step size $\Delta x = L/N$. The corresponding grid points are $x_i = i\Delta x$ for $i = 0, \dots, N$. Although the governing equations may not have a prescribed finite end time, in practice we simulate up to a fixed horizon $T$. Time is discretised into uniform steps of size $\Delta t$, with discrete time levels $t_j = j\Delta t$ for $j = 0, \dots, N_t$. The selection of $\Delta x$ and $\Delta t$ must balance accuracy, stability, and computational cost, and is therefore a key part of the numerical design process.
+            </p>
+        
+            <p>
+              For systems that contain stiff diffusion terms and nonlinear reaction components, such as reaction–diffusion equations, direct numerical integration can be challenging due to the coexistence of processes operating on different timescales. To make the problem tractable, the governing equation is separated into two parts:
+            </p>
+        
+            <p style="text-align:center;">
+              $$u_t = \mathbf{L}(u,m) + \mathbf{N}(u),$$
+            </p>
+        
+            <p>
+              where $\mathbf{L}$ represents the diffusive operator and $\mathbf{N}$ denotes the nonlinear or reactive component. Here, $u$ represents the species of interest. This separation, known as <em>operator splitting</em>, allows each contribution to be handled differently: the diffusion term is typically treated implicitly to enhance numerical stability, while the nonlinear term is treated explicitly to maintain computational efficiency. The resulting semi-discrete formulation provides a flexible structure that can be combined with various time-stepping schemes.
+            </p>
+        
+            <p>
+              Some of the schemes considered in this study are listed below.
+            </p>
+        
+            <h4>Adams–Bashforth–Moulton Schemes</h4>
+            <p>
+              These schemes combine Adams–Bashforth for the nonlinear term and Adams–Moulton for the linear term.
+            </p>
+        
+            <p><strong>AB1–AM1 (first-order)</strong> <a href="#ref-AB1AM1">[1]</a>:</p>
+            <p style="text-align:center;">
+              $$u^{n+1} = u^n + \Delta t \left[ \mathbf{L}u^{n+1} + \mathbf{N}(u^n, t^n) \right].$$
+            </p>
+        
+            <p><strong>AB2–AM2 (second-order)</strong> <a href="#ref-AB4BD4">[2]</a>:</p>
+            <p style="text-align:center;">
+              $$u^{n+1} = u^n + \frac{\Delta t}{2} \left[ \mathbf{L}(u^{n+1} + u^n) + 3\mathbf{N}(u^n, t^n) - \mathbf{N}(u^{n-1}, t^{n-1}) \right].$$
+            </p>
+        
+            <h4>Adams–Bashforth–Backward Differentiation Schemes</h4>
+            <p>
+              These schemes use Backward Differentiation for the linear term and Adams–Bashforth for the nonlinear term.
+            </p>
+        
+            <p><strong>AB2–BD2 (second-order)</strong> <a href="#ref-AB4BD4">[2]</a>:</p>
+            <p style="text-align:center;">
+              $$\frac{3u^{n+1} - 4u^n + u^{n-1}}{2\Delta t} = \mathbf{L}u^{n+1} + 2\mathbf{N}(u^n, t^n) - \mathbf{N}(u^{n-1}, t^{n-1}).$$
+            </p>
+        
+            <p><strong>AB4–BD4 (fourth-order)</strong> <a href="#ref-AB4BD4">[2]</a>:</p>
+            <p style="text-align:center; line-height:1.6;">
+              \[
+              \begin{aligned}
+              \frac{25u^{n+1} - 48u^n + 36u^{n-1} - 16u^{n-2} + 3u^{n-3}}{12\Delta t}
+              &= \mathbf{L}u^{n+1} + 55\mathbf{N}(u^n, t^n) \\[3pt]
+              &\hspace{-1.0em}- 59\mathbf{N}(u^{n-1}, t^{n-1}) \\[3pt]
+              &\hspace{-1.0em}+ 37\mathbf{N}(u^{n-2}, t^{n-2})
+              - 9\mathbf{N}(u^{n-3}, t^{n-3}).
+              \end{aligned}
+              \]
+            </p>
           </div>
-
-          <p>
-            Results showed that IMEX schemes offer a robust compromise between 
-            accuracy and efficiency, maintaining stability at large $\Delta t$ values 
-            while preserving second-order temporal convergence.  
-            In nonlinear diffusion models, IMEX integration remained stable even 
-            when explicit schemes failed, confirming its suitability for 
-            biological PDE systems with mixed stiffness.
-          </p>
-        </div>
-
         <!-- References -->
         <div class="card" style="margin-top:1rem;">
           <h3>References</h3>
