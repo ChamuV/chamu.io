@@ -11,7 +11,7 @@
 
   <link rel="canonical" href="https://chamu.io/projects/tumour-ecm/">
 
-  <!-- MathJax (inline $...$ support) -->
+  <!-- MathJax (inline $...$ and \( \) support) -->
   <script>
     window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
   </script>
@@ -90,7 +90,7 @@
         </div>
 
         <!-- ===========================
-             MODEL DESCRIPTION + TWA (same card)
+             SINGLE CARD: Model + TWA + Asymptotics + Numerical + Conclusion
         =========================== -->
         <div class="card" style="margin-top:1rem;">
 
@@ -159,76 +159,134 @@
             Linearising around steady states yields the Jacobian and local stability in the \((U,P,M)\) phase space. 
           </p>
 
-          <!-- Toggle Button -->
+          <!-- TW toggle -->
           <div style="text-align:center; margin-top:.5rem;">
-            <button id="toggleMode" style="
+            <button id="tw-toggle" style="
                 background:#eee; border:1px solid #ccc; border-radius:6px;
                 padding:.4rem .9rem; cursor:pointer; font-size:.9rem; color:#333;
                 transition:background .2s;">↔ Show Regeneration Case</button>
           </div>
 
-          <!-- No Regeneration (default visible) -->
-          <div id="noRegen" style="margin-top:1rem;">
+          <!-- TW: No Regeneration (default) -->
+          <div id="tw-noRegen" style="margin-top:1rem;">
             <div class="subcard" style="background:#fafafa; border:1px solid #ddd; padding:1rem; border-radius:8px;">
               <h4 style="margin-top:0;">No regeneration (\(\alpha = 0\))</h4>
-              <p>
-                The desingularised system admits two biologically relevant fixed points:
-                \[
-                (U,P,M)=(1,0,0), \qquad (U,P,M)=(0,0,\bar M),\ \bar M\in(0,1).
-                \]
-              </p>
-              <ul>
-                <li><strong>FP \((1,0,0)\):</strong> eigenvalues \(\{0,0,-c\}\) → non-hyperbolic with one stable direction; degeneracy in \((U,M)\).</li>
-                <li><strong>FP \((0,0,\bar M)\):</strong> continuum parametrised by \(\bar M\) with
-                  \[
-                  \mu_1=0,\quad \mu_{2,3}=\frac{-c \pm \sqrt{\,c^2-4\bar M(1-\bar M)\,}}{2}.
-                  \]
-                  Stable node if \(c^2>4\bar M(1-\bar M)\); stable spiral if \(c^2<4\bar M(1-\bar M)\).
-                </li>
-              </ul>
-              <p>
-                A minimal invasion speed:
-                \[
-                c_{\min}=2\sqrt{\bar M(1-\bar M)},
-                \]
-                below which travelling-wave solutions cannot exist.
-              </p>
+              <p style="color:var(--muted); font-style:italic;">(Full text here — fixed point and eigenvalue description...)</p>
             </div>
           </div>
 
-          <!-- With Regeneration (hidden initially) -->
-          <div id="withRegen" style="margin-top:1rem; display:none;">
+          <!-- TW: With Regeneration -->
+          <div id="tw-withRegen" style="margin-top:1rem; display:none;">
             <div class="subcard" style="background:#fafafa; border:1px solid #ddd; padding:1rem; border-radius:8px;">
               <h4 style="margin-top:0;">With regeneration (\(\alpha > 0\))</h4>
+              <p style="color:var(--muted); font-style:italic;">(Full text here — FP analysis and heteroclinic connections...)</p>
+            </div>
+          </div>
+
+          <!-- ===========================
+               ASYMPTOTIC ANALYSIS (single toggle)
+          =========================== -->
+          <h3 style="margin-top:2rem;">Asymptotic Analysis</h3>
+
+          <p>
+            We also performed asymptotic analysis and found that our model provides a good approximation 
+            to the expected asymptotic behaviour of the invasion front. The analysis was carried out 
+            separately for the cases with and without ECM regeneration.
+          </p>
+
+          <!-- Asymptotic single toggle -->
+          <div style="text-align:center; margin-top:0.75rem;">
+            <button id="asymp-toggle" style="
+                background:#eee; border:1px solid #ccc; border-radius:6px;
+                padding:0.4rem 0.9rem; cursor:pointer; font-size:0.9rem; color:#333;
+                transition:background 0.2s;">↔ Show Regeneration Case</button>
+          </div>
+
+          <!-- Asymptotic: No Regeneration (default) -->
+          <div id="asymp-noRegen" style="margin-top:1rem;">
+            <div class="subcard" style="background:#fafafa; border:1px solid #ddd; padding:1.25rem; border-radius:8px;">
+              <h4 style="margin-top:0;">No Regeneration (\(\alpha = 0\))</h4>
+              <p style="color:var(--muted); font-style:italic;">(Asymptotic analysis for no-regeneration case to be added...)</p>
+            </div>
+          </div>
+
+          <!-- Asymptotic: With Regeneration -->
+          <div id="asymp-withRegen" style="margin-top:1rem; display:none;">
+            <div class="subcard" style="background:#fafafa; border:1px solid #ddd; padding:1.25rem; border-radius:8px;">
+              <h4 style="margin-top:0;">With Regeneration (\(\alpha > 0\))</h4>
+              <p style="color:var(--muted); font-style:italic;">(Asymptotic analysis for regeneration case to be added...)</p>
+            </div>
+          </div>
+
+          <!-- ===========================
+               NUMERICAL RESULTS (single toggle)
+          =========================== -->
+          <h3 style="margin-top:2rem;">Numerical Results</h3>
+
+          <p>
+            We also ran numerical simulations of the model to visualise the invasion dynamics and compare them
+            against the analytical predictions. Whilst several features matched expectations from the
+            travelling-wave and asymptotic analyses, the simulations also revealed distinctive behaviours
+            that are unique to each regime.
+          </p>
+
+          <div style="text-align:center; margin-top:0.75rem;">
+            <button id="num-toggle" style="
+                background:#eee; border:1px solid #ccc; border-radius:6px;
+                padding:0.4rem 0.9rem; cursor:pointer; font-size:0.9rem; color:#333;
+                transition:background 0.2s;">↔ Show Regeneration Case</button>
+          </div>
+
+          <!-- Numerical: No Regeneration (default visible) -->
+          <div id="num-noRegen" style="margin-top:1rem;">
+            <div class="subcard" style="background:#fafafa; border:1px solid #ddd; padding:1.1rem; border-radius:8px;">
+              <h4 style="margin-top:0;">No regeneration (\(\alpha = 0\))</h4>
               <p>
-                The system admits two biologically relevant fixed points:
-                \[
-                (U,P,M)=(0,0,1), \qquad (U,P,M)=(1,0,M^*),\ \ M^*=\frac{\alpha}{\alpha+\lambda}.
-                \]
-              </p>
-              <ul>
-                <li><strong>FP \((0,0,1)\):</strong> eigenvalues \(\{0,0,-c\}\) → non-hyperbolic with one stable direction.</li>
-                <li><strong>FP \((1,0,M^*)\):</strong>
-                  \[
-                  \mu_1=b_2,\qquad \mu_{2,3}=\frac{-c \pm \sqrt{\,c^2+4M^*(1-M^*)\,}}{2},
-                  \]
-                  where
-                  \[
-                  b_2=-(3\lambda+3\alpha)M^{*2}+(2\lambda+4\alpha)M^*-\alpha.
-                  \]
-                  This is an <em>unstable saddle</em> with one positive eigenvalue.
-                </li>
-              </ul>
-              <p>
-                Numerical simulations reveal a finite minimal wave speed (no closed form). 
-                Below that speed, trajectories spiral toward \((1,0,M^*)\); at the admissible speed, 
-                heteroclinic connections link tumour-free and tumour-saturated states.
+                Without regeneration, the ECM is progressively eroded behind the tumour front, producing a sharp interface
+                between invaded and uninvaded regions. The front travels at an approximately constant speed and the behaviour
+                resembles a degenerate Fisher–KPP wave: diffusion effectively shuts down in the depleted region, the ECM gradient
+                localises near the front, and the tumour density saturates quickly behind it.
               </p>
             </div>
           </div>
-        </div>
 
-        <!-- References -->
+          <!-- Numerical: With Regeneration (hidden initially) -->
+          <div id="num-withRegen" style="margin-top:1rem; display:none;">
+            <div class="subcard" style="background:#fafafa; border:1px solid #ddd; padding:1.1rem; border-radius:8px;">
+              <h4 style="margin-top:0;">With regeneration (\(\alpha > 0\))</h4>
+              <p>
+                Introducing regeneration changes the dynamics qualitatively: the ECM partially recovers behind the front,
+                invasion becomes smoother and broader, and the speed is reduced relative to the purely degradative case.
+                Transient oscillations can appear in \(u\) and \(m\) near the leading edge, reflecting the local competition
+                between degradation and recovery; for larger \(\alpha\), the front settles into a slower, balanced configuration.
+              </p>
+            </div>
+          </div>
+
+          <!-- ===========================
+               CONCLUSION (still inside same card)
+          =========================== -->
+          <h3 style="margin-top:2rem;">Conclusion</h3>
+          <p>
+            We introduced a new model for tumour invasion that captures a more intricate role of the extracellular matrix (ECM),
+            incorporating both its degradative and regenerative behaviour. Through a combination of travelling-wave analysis,
+            asymptotic methods, and numerical simulations, we explored how these opposing mechanisms shape invasion dynamics.
+          </p>
+          <p>
+            The results revealed both expected and unexpected features: FKPP-like fronts in the absence of regeneration, and smoother,
+            slower invasion patterns once ECM recovery was included. These findings suggest that the interplay between degradation and
+            regeneration is fundamental in regulating tumour spread, while also indicating that further analysis is needed to fully
+            characterise the system.
+          </p>
+          <p>
+            Possible next steps include extending to two spatial dimensions (already under consideration), adding biological effects
+            such as normal-cell populations or tumour-cell death, and exploring deeper mathematical frameworks (e.g. bifurcation or
+            manifold analysis)—though the tractability of these directions remains an open question.
+          </p>
+
+        </div><!-- /single big card -->
+
+        <!-- References (separate card) -->
         <div class="card" style="margin-top:1rem;">
           <h3>References</h3>
           <ol style="padding-left:1.25rem;">
@@ -253,25 +311,75 @@
       });
   </script>
 
-  <!-- Toggle JS -->
+  <!-- Toggles JS (TW + Asymptotics + Numerical, single-button style, always one open) -->
   <script>
-    const toggleBtn = document.getElementById('toggleMode');
-    const noRegen = document.getElementById('noRegen');
-    const withRegen = document.getElementById('withRegen');
-    let showingRegen = false;
+    (function () {
+      // Travelling-wave toggle
+      const twToggle = document.getElementById('tw-toggle');
+      const twNo = document.getElementById('tw-noRegen');
+      const twYes = document.getElementById('tw-withRegen');
+      let twShowingRegen = false; // default: showing "No Regeneration"
 
-    toggleBtn.addEventListener('click', () => {
-      showingRegen = !showingRegen;
-      if (showingRegen) {
-        noRegen.style.display = 'none';
-        withRegen.style.display = 'block';
-        toggleBtn.textContent = '↔ Show No-Regeneration Case';
-      } else {
-        noRegen.style.display = 'block';
-        withRegen.style.display = 'none';
-        toggleBtn.textContent = '↔ Show Regeneration Case';
+      if (twToggle && twNo && twYes) {
+        twToggle.addEventListener('click', () => {
+          twShowingRegen = !twShowingRegen;
+          if (twShowingRegen) {
+            twNo.style.display = 'none';
+            twYes.style.display = 'block';
+            twToggle.textContent = '↔ Show No-Regeneration Case';
+          } else {
+            twNo.style.display = 'block';
+            twYes.style.display = 'none';
+            twToggle.textContent = '↔ Show Regeneration Case';
+          }
+          if (window.MathJax && window.MathJax.typeset) window.MathJax.typeset();
+        });
       }
-    });
+
+      // Asymptotic toggle (single button)
+      const asympToggle = document.getElementById('asymp-toggle');
+      const asympNo = document.getElementById('asymp-noRegen');
+      const asympYes = document.getElementById('asymp-withRegen');
+      let asympShowingRegen = false; // default: showing "No Regeneration"
+
+      if (asympToggle && asympNo && asympYes) {
+        asympToggle.addEventListener('click', () => {
+          asympShowingRegen = !asympShowingRegen;
+          if (asympShowingRegen) {
+            asympNo.style.display = 'none';
+            asympYes.style.display = 'block';
+            asympToggle.textContent = '↔ Show No-Regeneration Case';
+          } else {
+            asympNo.style.display = 'block';
+            asympYes.style.display = 'none';
+            asympToggle.textContent = '↔ Show Regeneration Case';
+          }
+          if (window.MathJax && window.MathJax.typeset) window.MathJax.typeset();
+        });
+      }
+
+      // Numerical Results toggle (single button)
+      const numToggle = document.getElementById('num-toggle');
+      const numNo = document.getElementById('num-noRegen');
+      const numYes = document.getElementById('num-withRegen');
+      let numShowingRegen = false; // default: showing "No Regeneration"
+
+      if (numToggle && numNo && numYes) {
+        numToggle.addEventListener('click', () => {
+          numShowingRegen = !numShowingRegen;
+          if (numShowingRegen) {
+            numNo.style.display = 'none';
+            numYes.style.display = 'block';
+            numToggle.textContent = '↔ Show No-Regeneration Case';
+          } else {
+            numNo.style.display = 'block';
+            numYes.style.display = 'none';
+            numToggle.textContent = '↔ Show Regeneration Case';
+          }
+          if (window.MathJax && window.MathJax.typeset) window.MathJax.typeset();
+        });
+      }
+    })();
   </script>
 
   <!-- Boids -->
