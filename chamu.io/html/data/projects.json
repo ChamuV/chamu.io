@@ -48,5 +48,15 @@
     "status": "complete",
     "link": "/projects/imex-schemes/",
     "updated": "2025-10-10"
+  },
+  {
+  "id": "neural-network-andrew-ng",
+  "name": "Neural Network from Scratch (Andrew Ng Coursera Course)",
+  "area": "Machine Learning",
+  "keywords": ["Neural Network", "Basics", "Backpropagation"],
+  "location": "Home",
+  "status": "complete",
+  "link": "/projects/neural-network-andrew-ng/",
+  "updated": "2025-10-29"
   }
 ]
