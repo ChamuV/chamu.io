@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Neural Network from Scratch (Andrew Ng Coursera Course) • Chamu</title>
 
-  <!-- Shared styles -->
+  <!-- Shared styles (root-relative) -->
   <link rel="stylesheet" href="/assets/site.css"/>
   <link rel="stylesheet" href="/assets/project-stylesheet.css"/>
 
@@ -18,8 +18,9 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
 
+<!-- IMPORTANT: project-page class enables sticky CSS -->
 <body data-bg="boids" class="project-page">
-  <!-- Keep boids behind content -->
+  <!-- Background canvas behind content -->
   <canvas id="boids-bg" aria-hidden="true"></canvas>
 
   <header class="site-header">
@@ -57,23 +58,20 @@
           <p>2025-10-29</p>
         </div>
 
-        <!-- Optional placeholders (you can remove these if not needed) -->
-        <!-- Report card (placeholder) -->
+        <!-- Report (optional placeholder) -->
         <div class="card" style="margin-top:1rem;">
           <h3>Report</h3>
           <p>
-            <!-- Replace the href with your PDF path or remove this block -->
             <a href="NN-from-scratch.pdf" target="_blank" rel="noopener" type="application/pdf">
               📄 Read the detailed report (PDF)
             </a>
           </p>
         </div>
 
-        <!-- Repository card (placeholder) -->
+        <!-- Repository (optional placeholder) -->
         <div class="card" style="margin-top:1rem;">
           <h3>Repository</h3>
           <p>
-            <!-- Replace with your repo link or remove this block -->
             <a href="https://github.com/your-username/nn-from-scratch" target="_blank" rel="noopener">
               🔗 github.com/your-username/nn-from-scratch
             </a>
@@ -88,28 +86,29 @@
 
       <!-- RIGHT COLUMN (scrolls) -->
       <div class="right-col">
-        <!-- Overview (blank) -->
+        <!-- Overview -->
         <div class="card">
-            <h3>Overview</h3>
-            <p>
-              After finishing my master’s, I decided to give machine learning another shot and took Andrew Ng’s Coursera course as a structured introduction. 
-              I already had a fair grasp of supervised learning but had never really explored unsupervised methods before. 
-              Through the course, I built my first neural network — a simple model for a coffee-roasting problem — and it was an exciting experience. 
-              It felt rewarding to create something that seemed quite “sophisticated,” yet was surprisingly intuitive once broken down.
-            </p>
-          
-            <p>
-              Neural networks are computational models inspired by the way biological neurons process information. 
-              They consist of layers of interconnected nodes that transform input data through mathematical functions to produce predictions or classifications. 
-              The strength of these models lies in their ability — even with simple architectures — to capture complex, nonlinear relationships in data. 
-              This makes them powerful tools for pattern recognition, decision-making, and learning representations directly from raw data.
-            </p>
-          </div>
+          <h3>Overview</h3>
+          <p>
+            After finishing my master’s, I decided to give machine learning another shot and took Andrew Ng’s Coursera course as a structured introduction. 
+            I already had a fair grasp of supervised learning but had never really explored unsupervised methods before. 
+            Through the course, I built my first neural network — a simple model for a coffee-roasting problem — and it was an exciting experience. 
+            It felt rewarding to create something that seemed quite “sophisticated,” yet was surprisingly intuitive once broken down.
+          </p>
+          <p>
+            Neural networks are computational models inspired by the way biological neurons process information. 
+            They consist of layers of interconnected nodes that transform input data through mathematical functions to produce predictions or classifications. 
+            The strength of these models lies in their ability — even with simple architectures — to capture complex, nonlinear relationships in data. 
+            This makes them powerful tools for pattern recognition, decision-making, and learning representations directly from raw data.
+          </p>
+        </div>
 
-        <!-- Description (blank; LaTeX-ready) -->
+        <!-- Description (blank) -->
         <div class="card" style="margin-top:1rem;">
           <h3>Description</h3>
-          <p style="color:var(--muted)">(Add your description here. You can include equations like \( \nabla J(\theta) \) — MathJax is enabled.)</p>
+          <p style="color:var(--muted)">
+            (Add your description here. You can include equations — MathJax is enabled.)
+          </p>
         </div>
 
         <!-- References (blank) -->
@@ -126,7 +125,7 @@
   <!-- Footer include -->
   <div id="footer-placeholder"></div>
   <script>
-    // Load shared footer (note: needs a local server, not file://)
+    // Load shared footer (works via http/https; not via file://)
     fetch("/assets/footer.html")
       .then(r => r.text())
       .then(html => {
@@ -136,7 +135,7 @@
       });
   </script>
 
-  <!-- Boids script -->
+  <!-- Boids background -->
   <script src="/boids-background.js" defer></script>
 </body>
 </html>
