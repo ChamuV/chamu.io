@@ -61,7 +61,7 @@
   },
   {
     "id": "modified-battleships",
-    "name": "Modified Battleships (Python Implementation)",
+    "name": "Modified Battleships",
     "area": "Programming",
     "keywords": ["Game Logic", "Recursion", "OOP-lite"],
     "location": "Home",

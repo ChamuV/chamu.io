@@ -1,58 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Raspberry Pi Buggy (old) • Chamu</title>
+
+  <!-- Shared styles -->
   <link rel="stylesheet" href="/assets/site.css"/>
+  <link rel="stylesheet" href="/assets/project-stylesheet.css"/>
+
   <link rel="canonical" href="https://chamu.io/projects/rpi-buggy-old/">
 </head>
-<body>
-<header class="site-header">
-  <nav class="nav">
-    <a class="brand" href="/">Chamu</a>
-    <div class="menu">
-      <a href="/about/">About</a><a href="/resume/">Resume</a>
-      <a href="/projects/">Projects</a><a href="/stats/">Stats</a><a href="/contact/">Contact</a>
+
+<body data-bg="boids" class="project-page">
+  <!-- Boids background canvas -->
+  <canvas id="boids-bg" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="/">Chamu.io</a>
+      <div class="menu">
+        <a href="/about/">About</a>
+        <a href="/resume/">Resume</a>
+        <a href="/projects/">Projects</a>
+        <a href="/stats/">Stats</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="project-layout">
+      <!-- LEFT COLUMN (sticky) -->
+      <div class="left-col">
+        <h1 style="margin-top:0;">Raspberry Pi Buggy (old)</h1>
+
+        <!-- Info card -->
+        <div class="card">
+          <p style="margin:.25rem 0;color:var(--muted)">
+            <em>Area:</em> RPi • <em>Location:</em> Home
+          </p>
+          <p>
+            <span class="pill" style="background:#f2f4f7;color:#384250;border-color:#d1d6de;">
+              archived
+            </span>
+          </p>
+
+          <h3>Keywords</h3>
+          <p>Raspberry Pi, Robotics, Computer Vision</p>
+
+          <h3>Updated</h3>
+          <p>2020-10-06</p>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Gallery</h3>
+          <p class="muted">Photos and clips coming soon.</p>
+        </div>
+
+        <!-- Back link -->
+        <p style="margin-top:1rem;">
+          <a href="/projects/">← Back to Projects</a>
+        </p>
+      </div>
+
+      <!-- RIGHT COLUMN (scrolls) -->
+      <div class="right-col">
+
+        <!-- OVERVIEW SECTION -->
+        <div class="card">
+          <h3>Overview</h3>
+          <p>
+            During my gap year after high school — right in the middle of the COVID lockdown — 
+            I suddenly had a lot more time at home. I came across a series of DIY robotics buggy 
+            videos online and decided to try building my own using an old Raspberry Pi left over 
+            from a physics project.
+          </p>
+          <p>
+            What started as a small experiment grew into a three-month build involving design, 
+            wiring, motor control, and software. By the end, I had a Raspberry-Pi-powered buggy 
+            that could connect to my phone, follow live commands, avoid obstacles, and stream 
+            a camera feed for remote navigation. It was the first time I properly combined 
+            hardware and software in a single project, and it became a solid introduction 
+            to robotics and embedded systems.
+          </p>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Reference</h3>
+          <p>
+            This project was originally inspired by the official Raspberry Pi tutorial:<br>
+            <a href="https://projects.raspberrypi.org/en/projects/build-a-buggy/0" 
+               target="_blank" rel="noopener">
+              🔗 Raspberry Pi — Build a Buggy
+            </a>
+          </p>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Description</h3>
+          <p>
+            The buggy was built following the Raspberry Pi Foundation’s 
+            <em>Build a Buggy</em> guide. The core idea was simple: assemble a small 
+            two-wheel robot platform, wire the motors to a motor controller board, 
+            and then program the movement using Python.
+          </p>
+        
+          <p>
+            The basic version of the buggy required only a small set of components:
+          </p>
+        
+          <ul>
+            <li>Raspberry Pi with GPIO header</li>
+            <li>Motor controller board</li>
+            <li>2× DC motors with wheels</li>
+            <li>Ball caster for stability</li>
+            <li>4× AA battery pack</li>
+            <li>Jumper wires and tape</li>
+            <li>A simple cardboard or plastic chassis</li>
+          </ul>
+        
+          <p>
+            Once the wiring was complete, I programmed the buggy to move using Python:
+            forward, backward, turning, and running simple movement sequences.
+          </p>
+        
+          <p>
+            After completing the basic buggy, I explored extensions using additional 
+            sensors. I added two <strong>line-following infrared sensors</strong> and 
+            experimented with an <strong>HC-SR04 ultrasonic “sonar” distance sensor</strong>
+            to detect objects and measure how far obstacles were from the buggy.
+          </p>
+        
+          <p>
+            I later discovered that I could pair the buggy with an Android app called 
+            <strong>Big Dot</strong>, which sends continuous direction commands over Wi-Fi. 
+            By combining the app’s live control with the ultrasonic sensor’s distance checks, 
+            I made the buggy <strong>follow me around</strong>: the phone kept it moving 
+            toward me, and the sonar sensor stopped it or redirected it whenever it detected 
+            an obstacle or got too close.
+          </p>
+        
+          <p>
+            This simple setup created a basic “follow-me while avoiding obstacles” behaviour, 
+            all built from inexpensive components and a few Python scripts.
+          </p>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <h3>Extensions</h3>
+          <p>
+            A few ideas I considered for taking the buggy further, both in hardware and behaviour:
+          </p>
+          <ul>
+            <li><strong>Face-recognition following</strong> — use a camera feed to recognise different people and adjust following speed or behaviour for each.</li>
+            <li><strong>Drone version</strong> — explore building an aerial variant with similar control logic, using lightweight motors and IMU stabilisation.</li>
+            <li><strong>Autonomous mapping</strong> — combine wheel odometry with the ultrasonic sensor to sketch a simple map of a room while navigating it.</li>
+            <li><strong>Voice-controlled movement</strong> — add basic speech commands (“forward”, “stop”, “left”) for hands-free operation.</li>
+            <li><strong>Web dashboard</strong> — create a browser-based interface with live camera feed, control buttons, and sensor readouts.</li>
+          </ul>
+        </div>
+
+      </div>
     </div>
-  </nav>
-</header>
+  </main>
 
-<main class="wrap">
-  <h1>Raspberry Pi Buggy (old)</h1>
-  <div class="card">
-    <p style="margin:.25rem 0;color:var(--muted)"><em>Area:</em> RPi • <em>Location:</em> Home</p>
-    <p><span class="pill" style="background:#f2f4f7;color:#384250;border-color:#d1d6de;">archived</span></p>
+  <!-- Footer include -->
+  <div id="footer-placeholder"></div>
+  <script>
+    // Load shared footer (doesn't load from file:// — use local server)
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+        const y = document.getElementById("year");
+        if (y) y.textContent = new Date().getFullYear();
+      });
+  </script>
 
-    <h3>Keywords</h3>
-    <p>Raspberry Pi, Robotics, Computer Vision</p>
-
-    <h3>Updated</h3>
-    <p>2020-10-06</p>
-
-    <h3>Link</h3>
-    <p><a href="/projects/rpi-buggy-old/" target="_blank" rel="noopener">Project page</a></p>
-
-    <hr style="margin:1rem 0;">
-    <p class="muted">Archive notes: what worked, what didn’t, and lessons learned.</p>
-  </div>
-  <p style="margin-top:1rem;"><a href="/projects/">← Back to Projects</a></p>
-</main>
-
-<footer>
-  <div class="icons">
-    <a class="icon" href="https://github.com/your-username" target="_blank" rel="noopener" aria-label="GitHub">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.55.12-3.23 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.68.24 2.93.12 3.23.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.61-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .5z"/></svg>
-    </a>
-    <a class="icon" href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5C0 2.12 1.12 1 2.5 1S4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.84-2.2 3.78-2.2 4.05 0 4.8 2.67 4.8 6.16V24h-4v-7.9c0-1.89-.03-4.32-2.63-4.32-2.63 0-3.03 2.05-3.03 4.18V24h-4V8z"/></svg>
-    </a>
-    <a class="icon" href="mailto:me@chamu.io" aria-label="Email">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5v11A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5v-11Z"/></svg>
-    </a>
-  </div>
-  <div>© <span id="year"></span> Chamu</div>
-</footer>
-<script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+  <!-- Boids script -->
   <script src="/boids-background.js" defer></script>
 </body>
 </html>
