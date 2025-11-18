@@ -104,41 +104,38 @@
             The specification required the game to follow a very precise text-based interaction protocol,
             including strict rules for ship placement, rotation, adjacency, hit detection, and sinking logic.
           </p>
-          <p>
-            To respect course policies, the full source code is <strong>not published</strong>,
-            but the design and learning aspects are summarised here.
+          <p style="font-size:0.9rem; color:var(--muted); margin-top:0.5rem;">
+            To respect course policies, the full source code is <strong>not published</strong>, but the design and learning
+            aspects are summarised here.
           </p>
         </div>
 
         <!-- Description -->
         <div class="card" style="margin-top:1rem;">
-          <h3>Description</h3>
-
-          <p>
-            The task was to implement a simplified Battleships engine using fundamental Python concepts:
-            <strong>functions, sets, branching logic, iterative prompting, and clean state updates</strong>.
-            The game operates entirely through the command line, with Player&nbsp;1 placing ships according to strict rules,
-            followed by Player&nbsp;2 firing until all ships are sunk.
-          </p>
-
-          <p>
-            Key features implemented:
-          </p>
-          <ul>
-            <li>set-based tracking of occupied and blocked squares</li>
-            <li>ship construction based on type, rotation, and anchor position</li>
-            <li>validity checking (bounds, overlap, adjacency)</li>
-            <li>differentiated hit and sinking logic for destroyers and battlecruisers</li>
-            <li>repeat-until-valid input loops</li>
-            <li>water/hit/sunk messaging with exact required phrasing</li>
-          </ul>
-
-          <p>
-            Although the game rules were intentionally restricted, the structure is extensible
-            and models many ideas that later appear in larger projects: modular design, input robustness,
-            state transitions, and clear function responsibilities.
-          </p>
-        </div>
+            <h3>Description</h3>
+          
+            <p>
+              The task was to implement a fully text-based version of the classic game 
+              <strong>Battleships</strong>. The game involves two stages. 
+              <strong>Player&nbsp;1</strong> begins by placing ships on a hidden 10×10 grid, and
+              <strong>Player&nbsp;2</strong> then fires at grid locations in an attempt to sink them.
+            </p>
+          
+            <p>
+              Ship placement is constrained by three rules:
+              <ul>
+                <li><strong>Boundary rule:</strong> every part of the ship must lie within the 10×10 board.</li>
+                <li><strong>No overlap:</strong> ships cannot occupy the same square.</li>
+                <li><strong>No adjacency:</strong> ships may not touch even diagonally.</li>
+              </ul>
+            </p>
+          
+            <p>
+              Once the fleet is fixed, Player&nbsp;2 repeatedly enters coordinates to “fire”. Each shot is
+              classified as <em>water</em>, a <em>hit</em>, or a <em>hit that sinks a ship</em>. 
+              The game continues until every ship in Player&nbsp;1’s fleet is sunk.
+            </p>
+          </div>
 
         <!-- Extensions -->
         <div class="card" style="margin-top:1rem;">
