@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Modified Battleships • Chamu</title>
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="/assets/site.css"/>
+  <link rel="stylesheet" href="/assets/project-stylesheet.css"/>
+
+  <link rel="canonical" href="https://chamu.io/projects/modified-battleships/">
+
+  <!-- MathJax config -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+
+<body data-bg="boids" class="project-page">
+  <canvas id="boids-bg" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="/">Chamu.io</a>
+      <div class="menu">
+        <a href="/about/">About</a>
+        <a href="/resume/">Resume</a>
+        <a href="/projects/">Projects</a>
+        <a href="/stats/">Stats</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="project-layout">
+
+      <!-- LEFT COLUMN -->
+      <div class="left-col">
+        <h1 style="margin-top:0;">Modified Battleships</h1>
+
+        <!-- Info card -->
+        <div class="card">
+          <p style="margin:.25rem 0;color:var(--muted)">
+            <em>Area:</em> Programming • <em>Location:</em> Home
+          </p>
+          <p>
+            <span class="pill" style="background:#e7f5ee;color:#1f5134;border-color:#b8e6cf;">
+              complete
+            </span>
+          </p>
+
+          <h3>Keywords</h3>
+          <p>Python, Game Logic, Functions, Sets</p>
+
+          <h3>Updated</h3>
+          <p>2025-11-18</p>
+        </div>
+
+        <!-- NOTE: Repository intentionally omitted -->
+        <!--
+        <div class="card" style="margin-top:1rem;">
+          <h3>Repository</h3>
+          <p><a href="" target="_blank" rel="noopener">🔗 View Code</a></p>
+        </div>
+        -->
+
+        <!-- Back link -->
+        <p style="margin-top:1rem;">
+          <a href="/projects/">← Back to Projects</a>
+        </p>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-col">
+
+        <!-- Overview -->
+        <div class="card">
+          <h3>Overview</h3>
+          <p>
+            After finishing my master’s in mathematics, I realised how much I enjoyed the computational
+            parts of my dissertation and wanted to strengthen my foundations in computer science.
+            I enrolled in a small introductory CS course—and the very first project was to build a
+            modified version of the classic game <em>Battleships</em>.
+          </p>
+          <p>
+            I had never played Battleships before, so implementing it from scratch was a completely new
+            experience. But it turned out to be an excellent exercise in thinking carefully about
+            <strong>functions, logic, data structures</strong>, and disciplined program flow.
+            Even though the game itself is simple, building it end-to-end felt like genuinely useful practice.
+          </p>
+        </div>
+
+        <!-- Course Context -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Course Context</h3>
+          <p>
+            This project formed part of the <strong>University of London PGCert in Computer Science</strong>,
+            and was included as a mid-term assessed assignment.
+          </p>
+          <p>
+            The specification required the game to follow a very precise text-based interaction protocol,
+            including strict rules for ship placement, rotation, adjacency, hit detection, and sinking logic.
+          </p>
+          <p>
+            To respect course policies, the full source code is <strong>not published</strong>,
+            but the design and learning aspects are summarised here.
+          </p>
+        </div>
+
+        <!-- Description -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Description</h3>
+
+          <p>
+            The task was to implement a simplified Battleships engine using fundamental Python concepts:
+            <strong>functions, sets, branching logic, iterative prompting, and clean state updates</strong>.
+            The game operates entirely through the command line, with Player&nbsp;1 placing ships according to strict rules,
+            followed by Player&nbsp;2 firing until all ships are sunk.
+          </p>
+
+          <p>
+            Key features implemented:
+          </p>
+          <ul>
+            <li>set-based tracking of occupied and blocked squares</li>
+            <li>ship construction based on type, rotation, and anchor position</li>
+            <li>validity checking (bounds, overlap, adjacency)</li>
+            <li>differentiated hit and sinking logic for destroyers and battlecruisers</li>
+            <li>repeat-until-valid input loops</li>
+            <li>water/hit/sunk messaging with exact required phrasing</li>
+          </ul>
+
+          <p>
+            Although the game rules were intentionally restricted, the structure is extensible
+            and models many ideas that later appear in larger projects: modular design, input robustness,
+            state transitions, and clear function responsibilities.
+          </p>
+        </div>
+
+        <!-- Extensions -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Extensions</h3>
+          <p>
+            This project served as a reminder that even a small collection of well-designed functions is
+            sufficient to build a complete game. It was a simple, confidence-building exercise in
+            moving from mathematical modelling to practical programming.
+          </p>
+
+          <p>If extended, I would explore:</p>
+
+          <ul>
+            <li>
+              <strong>Text-based board visualisation</strong><br>
+              Showing the grid live on screen would make the game clearer and more interactive.
+            </li>
+
+            <li>
+              <strong>Two-player placement and firing</strong><br>
+              Allowing both players to place ships and take turns would restore the feel of the classic game.
+            </li>
+
+            <li>
+              <strong>AI firing strategies</strong><br>
+              Adding a simple heuristic or learning-based AI would enable a “player vs computer” mode.
+            </li>
+          </ul>
+        </div>
+
+      </div> <!-- end right-col -->
+
+    </div> <!-- end project-layout -->
+  </main>
+
+  <!-- Footer include -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+        const y = document.getElementById("year");
+        if (y) y.textContent = new Date().getFullYear();
+      });
+  </script>
+
+  <script src="/boids-background.js" defer></script>
+</body>
+</html>

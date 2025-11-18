@@ -58,5 +58,15 @@
   "status": "complete",
   "link": "/projects/neural-network-andrew-ng/",
   "updated": "2025-10-29"
+  },
+  {
+    "id": "modified-battleships",
+    "name": "Modified Battleships (Python Implementation)",
+    "area": "Programming",
+    "keywords": ["Game Logic", "Recursion", "OOP-lite"],
+    "location": "Home",
+    "status": "complete",
+    "link": "/projects/modified-battleships/",
+    "updated": "2025-11-18"
   }
 ]
