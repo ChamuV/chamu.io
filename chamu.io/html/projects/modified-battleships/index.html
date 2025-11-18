@@ -116,24 +116,41 @@
           
             <p>
               The task was to implement a fully text-based version of the classic game 
-              <strong>Battleships</strong>. The game involves two stages. 
+              <strong>Battleships</strong>. The game has two stages. 
               <strong>Player&nbsp;1</strong> begins by placing ships on a hidden 10×10 grid, and
               <strong>Player&nbsp;2</strong> then fires at grid locations in an attempt to sink them.
             </p>
           
             <p>
-              Ship placement is constrained by three rules:
-              <ul>
-                <li><strong>Boundary rule:</strong> every part of the ship must lie within the 10×10 board.</li>
-                <li><strong>No overlap:</strong> ships cannot occupy the same square.</li>
-                <li><strong>No adjacency:</strong> ships may not touch even diagonally.</li>
-              </ul>
+              Player&nbsp;1 can place two types of ships:
             </p>
           
+            <ul>
+              <li>
+                <strong>Destroyer</strong> — occupies 2 squares in a straight line. It is sunk when 
+                <em>both</em> squares are hit.
+              </li>
+              <li>
+                <strong>Battlecruiser</strong> — occupies 5 squares in a fixed “L-shaped” pattern. 
+                It is sunk when either all three squares on its <em>long side</em> are hit, or both 
+                squares on its <em>middle axis</em> are hit.
+              </li>
+            </ul>
+          
             <p>
-              Once the fleet is fixed, Player&nbsp;2 repeatedly enters coordinates to “fire”. Each shot is
-              classified as <em>water</em>, a <em>hit</em>, or a <em>hit that sinks a ship</em>. 
-              The game continues until every ship in Player&nbsp;1’s fleet is sunk.
+              Ship placement is restricted by three rules:
+            </p>
+          
+            <ul>
+              <li><strong>Boundary rule:</strong> every part of the ship must lie within the 10×10 board.</li>
+              <li><strong>No overlap:</strong> ships cannot occupy the same square.</li>
+              <li><strong>No adjacency:</strong> ships may not touch — even diagonally.</li>
+            </ul>
+          
+            <p>
+              Once the fleet is placed, Player&nbsp;2 repeatedly enters coordinates to “fire”. Each shot is 
+              classified as <em>water</em>, a <em>hit</em>, or a <em>hit that sinks a ship</em> using the rules 
+              above. The game ends only once every ship in Player&nbsp;1’s fleet has been sunk.
             </p>
           </div>
 
