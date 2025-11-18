@@ -53,6 +53,7 @@
           <p>2020-10-06</p>
         </div>
 
+        <!-- Gallery placeholder -->
         <div class="card" style="margin-top:1rem;">
           <h3>Gallery</h3>
           <p class="muted">Photos and clips coming soon.</p>
@@ -64,10 +65,10 @@
         </p>
       </div>
 
-      <!-- RIGHT COLUMN (scrolls) -->
+      <!-- RIGHT COLUMN -->
       <div class="right-col">
 
-        <!-- OVERVIEW SECTION -->
+        <!-- OVERVIEW -->
         <div class="card">
           <h3>Overview</h3>
           <p>
@@ -86,6 +87,7 @@
           </p>
         </div>
 
+        <!-- REFERENCE -->
         <div class="card" style="margin-top:1rem;">
           <h3>Reference</h3>
           <p>
@@ -97,19 +99,21 @@
           </p>
         </div>
 
+        <!-- DESCRIPTION -->
         <div class="card" style="margin-top:1rem;">
           <h3>Description</h3>
+
           <p>
             The buggy was built following the Raspberry Pi Foundation’s 
             <em>Build a Buggy</em> guide. The core idea was simple: assemble a small 
             two-wheel robot platform, wire the motors to a motor controller board, 
             and then program the movement using Python.
           </p>
-        
+
           <p>
-            The basic version of the buggy required only a small set of components:
+            The basic version required a small set of components:
           </p>
-        
+
           <ul>
             <li>Raspberry Pi with GPIO header</li>
             <li>Motor controller board</li>
@@ -119,45 +123,49 @@
             <li>Jumper wires and tape</li>
             <li>A simple cardboard or plastic chassis</li>
           </ul>
-        
+
           <p>
             Once the wiring was complete, I programmed the buggy to move using Python:
             forward, backward, turning, and running simple movement sequences.
+            Most of the hardware control was done using the 
+            <code>gpiozero</code> library, which greatly simplifies GPIO access.
           </p>
-        
+
           <p>
-            After completing the basic buggy, I explored extensions using additional 
-            sensors. I added two <strong>line-following infrared sensors</strong> and 
-            experimented with an <strong>HC-SR04 ultrasonic “sonar” distance sensor</strong>
-            to detect objects and measure how far obstacles were from the buggy.
+            After the basic buggy worked, I added two 
+            <strong>line-following infrared sensors</strong> and experimented with an 
+            <strong>HC-SR04 ultrasonic “sonar” distance sensor</strong>.
+            For the ultrasonic sensor, I used Python’s <code>time</code> module to 
+            measure echo return durations and the <code>signal</code> module to handle 
+            timeouts safely.
           </p>
-        
+
           <p>
             I later discovered that I could pair the buggy with an Android app called 
-            <strong>Big Dot</strong>, which sends continuous direction commands over Wi-Fi. 
-            By combining the app’s live control with the ultrasonic sensor’s distance checks, 
-            I made the buggy <strong>follow me around</strong>: the phone kept it moving 
-            toward me, and the sonar sensor stopped it or redirected it whenever it detected 
-            an obstacle or got too close.
+            <strong>Big Dot</strong> that sends continuous direction commands over Wi-Fi. 
+            Combining this with the sonar sensor allowed me to create a simple 
+            <strong>follow-me system</strong>: the phone kept the buggy moving toward me, 
+            and the ultrasonic sensor stopped or redirected it when obstacles were detected.
           </p>
-        
+
           <p>
-            This simple setup created a basic “follow-me while avoiding obstacles” behaviour, 
-            all built from inexpensive components and a few Python scripts.
+            This produced a basic “follow-me while avoiding obstacles” behaviour, 
+            built entirely from inexpensive components and a few Python scripts.
           </p>
         </div>
 
+        <!-- EXTENSIONS -->
         <div class="card" style="margin-top:1rem;">
           <h3>Extensions</h3>
           <p>
             A few ideas I considered for taking the buggy further, both in hardware and behaviour:
           </p>
           <ul>
-            <li><strong>Face-recognition following</strong> — use a camera feed to recognise different people and adjust following speed or behaviour for each.</li>
-            <li><strong>Drone version</strong> — explore building an aerial variant with similar control logic, using lightweight motors and IMU stabilisation.</li>
-            <li><strong>Autonomous mapping</strong> — combine wheel odometry with the ultrasonic sensor to sketch a simple map of a room while navigating it.</li>
-            <li><strong>Voice-controlled movement</strong> — add basic speech commands (“forward”, “stop”, “left”) for hands-free operation.</li>
-            <li><strong>Web dashboard</strong> — create a browser-based interface with live camera feed, control buttons, and sensor readouts.</li>
+            <li><strong>Face-recognition following</strong> — track different people and adjust following behaviour.</li>
+            <li><strong>Drone version</strong> — an aerial variant using lightweight motors and IMU stabilisation.</li>
+            <li><strong>Autonomous mapping</strong> — use odometry + sonar to sketch a simple map of a room.</li>
+            <li><strong>Voice-controlled movement</strong> — “forward”, “stop”, “left”, etc., via a small microphone module.</li>
+            <li><strong>Web dashboard</strong> — a browser interface with live feed + controls.</li>
           </ul>
         </div>
 
