@@ -158,27 +158,37 @@
         <div class="card" style="margin-top:1rem;">
           <h3>Extensions</h3>
           <p>
-            This project served as a reminder that even a small collection of well-designed functions is
-            sufficient to build a complete game. It was a simple, confidence-building exercise in
-            moving from mathematical modelling to practical programming.
+            This Boids implementation is intentionally small and self-contained, which makes it a good
+            starting point for experiments rather than a final “finished” system.
           </p>
 
           <p>If extended, I would explore:</p>
 
           <ul>
             <li>
-              <strong>Text-based board visualisation</strong><br>
-              Showing the grid live on screen would make the game clearer and more interactive.
+              <strong>Colour-based sub-flocks</strong><br>
+              Restricting alignment and cohesion so that boids only respond strongly to neighbours of the
+              same colour. This would create multiple interacting sub-flocks that occasionally pass through
+              each other rather than always merging into a single group.
             </li>
 
             <li>
-              <strong>Two-player placement and firing</strong><br>
-              Allowing both players to place ships and take turns would restore the feel of the classic game.
+              <strong>Obstacle avoidance</strong><br>
+              Introducing simple obstacles on the canvas and adding a repulsion term so boids flow around
+              them. This would make the motion feel closer to “navigation” in a scene rather than just
+              free-space flocking.
             </li>
 
             <li>
-              <strong>AI firing strategies</strong><br>
-              Adding a simple heuristic or learning-based AI would enable a “player vs computer” mode.
+              <strong>Different boundary conditions</strong><br>
+              Experimenting with wrap-around, reflective (bouncing), or soft “buffer zones” near the edges
+              to see how the qualitative behaviour of the flock changes when the domain is constrained.
+            </li>
+
+            <li>
+              <strong>Lightweight interaction</strong><br>
+              Adding minimal interaction, such as a cursor that acts as a weak attractor or repeller, while
+              still keeping the background subtle enough not to distract from the main content.
             </li>
           </ul>
         </div>

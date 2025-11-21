@@ -68,5 +68,15 @@
     "status": "complete",
     "link": "/projects/modified-battleships/",
     "updated": "2025-11-18"
+  },
+  {
+    "id": "boids-background",
+    "name": "Boids Simulation",
+    "area": "Mathematics",
+    "keywords": ["Artificial Life", "Chaos-Theory", "Flocking Behaviour"],
+    "location": "Home",
+    "status": "complete",
+    "link": "/projects/boids-background/",
+    "updated": "2025-11-21"
   }
 ]

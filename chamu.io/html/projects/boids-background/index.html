@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Boids Simulation • Chamu</title>
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="/assets/site.css"/>
+  <link rel="stylesheet" href="/assets/project-stylesheet.css"/>
+
+  <link rel="canonical" href="https://chamu.io/projects/boids-background/">
+</head>
+
+<body data-bg="boids" class="project-page">
+  <!-- Boids background canvas -->
+  <canvas id="boids-bg" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="/">Chamu.io</a>
+      <div class="menu">
+        <a href="/about/">About</a>
+        <a href="/resume/">Resume</a>
+        <a href="/projects/">Projects</a>
+        <a href="/stats/">Stats</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div class="project-layout">
+      <!-- LEFT COLUMN (sticky) -->
+      <div class="left-col">
+        <h1 style="margin-top:0;">Boids Simulation</h1>
+
+        <!-- Info card -->
+        <div class="card">
+          <p style="margin:.25rem 0;color:var(--muted)">
+            <em>Area:</em> Web • <em>Location:</em> Home
+          </p>
+          <p>
+            <span class="pill" style="background:#e7f5ee;color:#1f5134;border-color:#b8e6cf;">complete</span>
+          </p>
+
+          <h3>Keywords</h3>
+          <p>Artificial Life, Chaos-Theory, Flocking Behaviour</p>
+
+          <h3>Updated</h3>
+          <p>2025-11-21</p>
+        </div>
+
+        <!-- Repository card -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Repository</h3>
+          <p>
+            <!-- TODO: update this link to your actual repo -->
+            <a href="https://github.com/ChamuV/Boids" target="_blank" rel="noopener">
+              🔗 github.com
+            </a>
+          </p>
+        </div>
+
+        <!-- Back link -->
+        <p style="margin-top:1rem;">
+          <a href="/projects/">← Back to Projects</a>
+        </p>
+      </div>
+
+      <!-- RIGHT COLUMN (scrolls) -->
+      <div class="right-col">
+        <!-- Overview -->
+        <div class="card">
+          <h3>Overview</h3>
+          <p>
+            When you watch a flock of birds in the sky, it’s hard not to miss the dynamics: they bunch
+            together, fan out, change direction at the same moment, and sometimes split before regrouping
+            again. It looks organic and slightly chaotic, yet the underlying behaviour can be modelled
+            surprisingly well using simple rules from dynamical systems and models often associated with
+            “chaos theory”. Once I learned this, I wanted to try implementing it myself.
+          </p>
+          
+          <p>
+            I also wanted a background for my website that felt a bit different—something that reflected my
+            interest in mathematics while staying only mildly distracting. A lightweight Boids simulation
+            turned out to be a good solution: a calm flock drifting behind the content, driven by simple rules
+            but producing surprisingly rich behaviour.
+          </p>
+        </div>
+
+        <!-- How It Works -->
+        <div class="card" style="margin-top:1rem;">
+            <h3>How It Works</h3>
+            <p>
+              The Boids model, introduced by Craig Reynolds, recreates flocking behaviour using only three 
+              simple rules applied independently to each agent. Each boid looks at its nearby neighbours and 
+              updates its velocity based on:
+            </p>
+        
+            <ul>
+              <li>
+                <strong>Separation</strong> – steer away from neighbours that are too close to avoid collisions.
+              </li>
+              <li>
+                <strong>Alignment</strong> – adjust direction to match the average heading of nearby boids.
+              </li>
+              <li>
+                <strong>Cohesion</strong> – steer towards the average position (centre of mass) of the local flock.
+              </li>
+            </ul>
+        
+            <p>
+              These rules are combined at each animation step, and the resulting velocity advances the boid 
+              forward. Although each rule is simple and entirely local, their interaction produces the familiar 
+              emergent patterns of flocking—groups forming, splitting, turning, and reuniting.
+            </p>
+          </div>
+
+        <!-- Implementation details -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Implementation Details</h3>
+          <p>
+            The implementation is intentionally lightweight so it can run smoothly
+            in the background without burning the laptop:
+          </p>
+          <ul>
+            <li>
+              Written in <strong>vanilla JavaScript</strong> and rendered on an
+              HTML5 <code>&lt;canvas&gt;</code> using the 2D drawing context.
+            </li>
+            <li>
+              Uses <code>requestAnimationFrame</code> for smooth, browser-synchronised updates.
+            </li>
+            <li>
+              Keeps the number of boids modest so a simple all-pairs neighbour
+              search is sufficient for good performance.
+            </li>
+            <li>
+              Boids wrap around screen edges so the flock never disappears.
+            </li>
+            <li>
+              Colours and line thickness are chosen to stay in the background and not
+              compete with the content of the page.
+            </li>
+          </ul>
+          <p>
+            The same script is reused across the site: any page with
+            <code>data-bg="boids"</code> and a <code>&lt;canvas id="boids-bg"&gt;</code>
+            element will automatically get the flocking background.
+          </p>
+        </div>
+
+        <!-- Extension ideas -->
+        <div class="card" style="margin-top:1rem;">
+          <h3>Extensions</h3>
+          <p>
+            This Boids engine is designed to be easy to tweak. Future extensions I’m
+            considering include:
+          </p>
+          <ul>
+            <li>Changing colours or behaviour based on the current page or section.</li>
+            <li>Adding mouse interaction so the flock gently avoids or follows the cursor.</li>
+            <li>Experimenting with different boundary conditions and obstacle avoidance.</li>
+          </ul>
+          <p>
+            Because the code is small and self-contained, it also serves as a fun sandbox
+            for experimenting with ideas from <strong>dynamical systems</strong> and
+            <strong>collective behaviour</strong>.
+          </p>
+        </div>
+
+        <!-- References -->
+        <div class="card" style="margin-top:1rem;">
+            <h3>References</h3>
+            <ol style="padding-left:1.25rem; margin:.5rem 0 0;">
+              <li>
+                Craig Reynolds, “Flocks, Herds, and Schools: A Distributed Behavioral Model,” 
+                <em>ACM SIGGRAPH</em>, 1987.
+              </li>
+              <li>
+                Ichiro Aoki, “A Simulation Study on the Schooling Mechanism in Fish,” 
+                <em>Nippon Suisan Gakkaishi</em>, 1982.
+              </li>
+              <li>
+                Wikipedia contributors, “Boids,” <em>Wikipedia, The Free Encyclopedia</em>.
+              </li>
+            </ol>
+          </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer include -->
+  <div id="footer-placeholder"></div>
+  <script>
+    // Load shared footer (note: this won't work from file:// — use a local server)
+    fetch("/assets/footer.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+        const y = document.getElementById("year");
+        if (y) y.textContent = new Date().getFullYear();
+      });
+  </script>
+
+  <!-- Boids script -->
+  <script src="/boids-background.js" defer></script>
+</body>
+</html>
