@@ -6,22 +6,62 @@
   <title>Projects • Chamu RV</title>
   <meta name="description" content="Projects by Chamu RV."/>
   <style>
-    :root{--ink:#0c1116; --muted:#5a6775; --bg:#f5f7fb; --card:#fff; --brand:#003566; --link:#1e5bb8; --maxw:980px;}
-    *{box-sizing:border-box} body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--ink)}
-    .site-header{position:sticky; top:0; background:#fff; border-bottom:1px solid rgba(0,0,0,.06)}
-    .nav{max-width:var(--maxw); margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:.8rem 1rem;}
+    :root{
+      --ink:#0c1116; --muted:#5a6775; --bg:#f5f7fb;
+      --card:#fff; --brand:#003566; --link:#1e5bb8; --maxw:980px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg); color:var(--ink)
+    }
+    .site-header{
+      position:sticky; top:0; background:#fff;
+      border-bottom:1px solid rgba(0,0,0,.06)
+    }
+    .nav{
+      max-width:var(--maxw); margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.8rem 1rem;
+    }
     .brand{font-weight:800; color:var(--brand)}
-    .menu{display:flex; gap:1rem} .menu a{color:var(--link); text-decoration:none; padding:.35rem .6rem; border-radius:8px}
+    .menu{display:flex; gap:1rem}
+    .menu a{
+      color:var(--link); text-decoration:none;
+      padding:.35rem .6rem; border-radius:8px
+    }
     .menu a:hover{background:rgba(30,91,184,.12)}
-    .wrap{max-width:var(--maxw); margin:2rem auto; padding:0 1rem}
+
+    .wrap{
+      max-width:var(--maxw); margin:2rem auto; padding:0 1rem
+    }
     h1{margin:.25rem 0 1rem}
+
     #project-list{list-style:none; padding:0; margin:1rem 0 2rem}
-    .card{display:block; background:var(--card); border:1px solid rgba(0,0,0,.06); border-radius:12px; padding:1rem 1.25rem; margin:.75rem 0; color:inherit; text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.04)}
-    .card:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.06)}
-    .head{display:flex; justify-content:space-between; align-items:center; gap:1rem}
+
+    .card{
+      display:block; background:var(--card);
+      border:1px solid rgba(0,0,0,.06); border-radius:12px;
+      padding:1rem 1.25rem; margin:.75rem 0;
+      color:inherit; text-decoration:none;
+      box-shadow:0 2px 10px rgba(0,0,0,.04)
+    }
+    .card:hover{
+      transform:translateY(-1px);
+      box-shadow:0 6px 16px rgba(0,0,0,.06)
+    }
+
+    .head{
+      display:flex; justify-content:space-between; align-items:center; gap:1rem
+    }
     .name{font-weight:700}
     .meta{margin-top:.35rem; color:var(--muted)}
-    .pill{display:inline-block; padding:.25rem .6rem; border-radius:999px; font-size:.85rem; font-weight:600; border:1px solid}
+
+    .pill{
+      display:inline-block; padding:.25rem .6rem; border-radius:999px;
+      font-size:.85rem; font-weight:600; border:1px solid
+    }
   </style>
 </head>
 <body>
@@ -52,34 +92,57 @@
     };
 
     fetch('/data/projects.json')
-      .then(r=>r.json())
-      .then(projects=>{
-        const list=document.getElementById('project-list');
-        projects.forEach(p=>{
-          const st=(p.status||'idea').toLowerCase();
-          const s=STATUS_STYLES[st]||STATUS_STYLES.idea;
+      .then(r => r.json())
+      .then(projects => {
+        const list = document.getElementById('project-list');
 
-          const li=document.createElement('li');
-          const a=document.createElement('a');
-          a.className='card';
-          a.href=p.link || `/projects/${encodeURIComponent(p.id)}/`;
-          a.setAttribute('aria-label',`Open project: ${p.name}`);
+        // sort newest first + limit to 3
+        const recent = projects
+          .slice()
+          .sort((a, b) => new Date(b.updated) - new Date(a.updated))
+          .slice(0, 3);
 
-          const head=document.createElement('div'); head.className='head';
-          const name=document.createElement('div'); name.className='name'; name.textContent=p.name;
-          const pill=document.createElement('span'); pill.className='pill'; pill.textContent=st;
-          pill.style.background=s.bg; pill.style.color=s.text; pill.style.borderColor=s.border;
+        recent.forEach(p => {
+          const st = (p.status || 'idea').toLowerCase();
+          const s = STATUS_STYLES[st] || STATUS_STYLES.idea;
 
-          const meta=document.createElement('div'); meta.className='meta';
-          meta.innerHTML=`<em>${p.area}</em> • ${(p.keywords||[]).join(', ')}`;
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.className = 'card';
+          a.href = p.link || `/projects/${encodeURIComponent(p.id)}/`;
+          a.setAttribute('aria-label', `Open project: ${p.name}`);
 
-          head.appendChild(name); head.appendChild(pill);
-          a.appendChild(head); a.appendChild(meta);
-          li.appendChild(a); list.appendChild(li);
+          const head = document.createElement('div');
+          head.className = 'head';
+
+          const name = document.createElement('div');
+          name.className = 'name';
+          name.textContent = p.name;
+
+          const pill = document.createElement('span');
+          pill.className = 'pill';
+          pill.textContent = st;
+          pill.style.background  = s.bg;
+          pill.style.color       = s.text;
+          pill.style.borderColor = s.border;
+
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+          meta.innerHTML = `<em>${p.area}</em> • ${(p.keywords || []).join(', ')}`;
+
+          head.appendChild(name);
+          head.appendChild(pill);
+          a.appendChild(head);
+          a.appendChild(meta);
+          li.appendChild(a);
+          list.appendChild(li);
         });
       })
-      .catch(err=>console.error('projects.json error', err));
+      .catch(err => console.error('projects.json error', err));
   </script>
+
   <script src="/boids-background.js" defer></script>
+
+  
 </body>
 </html>

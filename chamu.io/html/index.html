@@ -67,17 +67,24 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
     const STATUS_STYLES = {
-      active: { bg: '#e8f7ef', text: '#147a3b', border: '#bfe8cf' },
-      paused: { bg: '#fff4e5', text: '#a15c00', border: '#ffd59e' },
-      archived: { bg: '#f2f4f7', text: '#384250', border: '#d1d6de' },
-      idea: { bg: '#e9f2ff', text: '#1e5bb8', border: '#bed8ff' }
+      active:  { bg: '#e8f7ef', text: '#147a3b', border: '#bfe8cf' },
+      paused:  { bg: '#fff4e5', text: '#a15c00', border: '#ffd59e' },
+      archived:{ bg: '#f2f4f7', text: '#384250', border: '#d1d6de' },
+      idea:    { bg: '#e9f2ff', text: '#1e5bb8', border: '#bed8ff' }
     };
 
     fetch('/data/projects.json')
       .then(r => r.json())
       .then(projects => {
         const list = document.getElementById('project-list');
-        projects.forEach(p => {
+
+        // sort by updated date (newest first) and take only 3
+        const recent = projects
+          .slice()
+          .sort((a, b) => new Date(b.updated) - new Date(a.updated))
+          .slice(0, 3);
+
+        recent.forEach(p => {
           const st = (p.status || 'idea').toLowerCase();
           const s = STATUS_STYLES[st] || STATUS_STYLES.idea;
 
@@ -90,7 +97,9 @@
               <div style="font-weight:700">${p.name}</div>
               <span class="pill" style="background:${s.bg};color:${s.text};border-color:${s.border};">${st}</span>
             </div>
-            <div style="color:var(--muted);margin-top:.35rem;"><em>${p.area}</em> • ${(p.keywords||[]).join(', ')}</div>
+            <div style="color:var(--muted);margin-top:.35rem;">
+              <em>${p.area}</em> • ${(p.keywords || []).join(', ')}
+            </div>
           `;
           li.appendChild(a);
           list.appendChild(li);
@@ -99,8 +108,32 @@
       .catch(err => console.error('projects.json error', err));
   </script>
 
-  <!-- Boids engine (leave as separate file) -->
-  <script src="/boids-background.js"></script>
+  <!-- Boids engine -->
   <script src="/boids-background.js" defer></script>
+
+<!-- Small "what's this?" link in the bottom-right -->
+<a href="/projects/boids-background/"
+   class="whats-this"
+   aria-label="What is this background?">
+   what's this?
+</a>
+
+<style>
+  .whats-this {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    z-index: 20; /* above background but below modals */
+    font-family: var(--font, system-ui, -apple-system, Segoe UI, Roboto, sans-serif);
+  }
+  .whats-this:hover {
+    opacity: 1;
+  }
+</style>
 </body>
 </html>
