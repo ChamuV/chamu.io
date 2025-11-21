@@ -70,32 +70,34 @@
 
       <!-- RIGHT COLUMN (scrolls) -->
       <div class="right-col">
+        
         <!-- Overview -->
         <div class="card">
-          <h3>Overview</h3>
-          <p>
-            When you watch a flock of birds in the sky, it’s hard not to miss the dynamics: they bunch
-            together, fan out, change direction at the same moment, and sometimes split before regrouping
-            again. It looks organic and slightly chaotic, yet the underlying behaviour can be modelled
-            surprisingly well using simple rules from dynamical systems and models often associated with
-            “chaos theory”. Once I learned this, I wanted to try implementing it myself.
-          </p>
-          
-          <p>
-            I also wanted a background for my website that felt a bit different—something that reflected my
-            interest in mathematics while staying only mildly distracting. A lightweight Boids simulation
-            turned out to be a good solution: a calm flock drifting behind the content, driven by simple rules
-            but producing surprisingly rich behaviour.
-          </p>
-        </div>
+            <h3>Overview</h3>
+            <p>
+              The Boids model—short for “bird-oid objects”—was introduced by Craig Reynolds in the late 1980s
+              as a way to simulate bird-like flocking using a few very simple local rules. The idea is that
+              what looks like coordinated group behaviour can emerge entirely from individual agents reacting
+              only to their nearby neighbours. I found this appealing because it connects naturally to topics
+              in dynamical systems, collective behaviour, and emergent patterns, while also matching something
+              you can observe directly just by looking outside.
+            </p>
+        
+            <p>
+              I also wanted a background for my website that reflected this interest in mathematical
+              simulations without being overly distracting. A lightweight Boids implementation turned out
+              to be a good fit: a subtle flock drifting behind the page, driven by a small set of rules yet
+              producing surprisingly rich motion.
+            </p>
+          </div>
 
         <!-- How It Works -->
         <div class="card" style="margin-top:1rem;">
             <h3>How It Works</h3>
             <p>
-              The Boids model, introduced by Craig Reynolds, recreates flocking behaviour using only three 
-              simple rules applied independently to each agent. Each boid looks at its nearby neighbours and 
-              updates its velocity based on:
+              Boids works by giving each agent (each “boid”) a simple set of behavioural rules. The boid does
+              not know anything about the flock as a whole—it only looks at nearby neighbours and adjusts its
+              velocity accordingly. The classical model uses three components:
             </p>
         
             <ul>
@@ -111,45 +113,12 @@
             </ul>
         
             <p>
-              These rules are combined at each animation step, and the resulting velocity advances the boid 
-              forward. Although each rule is simple and entirely local, their interaction produces the familiar 
-              emergent patterns of flocking—groups forming, splitting, turning, and reuniting.
+              Each of these produces a small steering vector. The final velocity update is a weighted
+              combination of all three, and the boid then moves forward. Although each rule is simple and
+              purely local, their interaction produces the characteristic large-scale patterns of flocking—
+              groups forming, splitting, turning, and reuniting.
             </p>
           </div>
-
-        <!-- Implementation details -->
-        <div class="card" style="margin-top:1rem;">
-          <h3>Implementation Details</h3>
-          <p>
-            The implementation is intentionally lightweight so it can run smoothly
-            in the background without burning the laptop:
-          </p>
-          <ul>
-            <li>
-              Written in <strong>vanilla JavaScript</strong> and rendered on an
-              HTML5 <code>&lt;canvas&gt;</code> using the 2D drawing context.
-            </li>
-            <li>
-              Uses <code>requestAnimationFrame</code> for smooth, browser-synchronised updates.
-            </li>
-            <li>
-              Keeps the number of boids modest so a simple all-pairs neighbour
-              search is sufficient for good performance.
-            </li>
-            <li>
-              Boids wrap around screen edges so the flock never disappears.
-            </li>
-            <li>
-              Colours and line thickness are chosen to stay in the background and not
-              compete with the content of the page.
-            </li>
-          </ul>
-          <p>
-            The same script is reused across the site: any page with
-            <code>data-bg="boids"</code> and a <code>&lt;canvas id="boids-bg"&gt;</code>
-            element will automatically get the flocking background.
-          </p>
-        </div>
 
         <!-- Extension ideas -->
         <div class="card" style="margin-top:1rem;">
